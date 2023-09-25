@@ -1,16 +1,16 @@
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import Navbar from './components/Navbar/Navbar'
-
+import Login from './views/Login/Login'
 
 function App() {
-
 
   return (
     <div className='App'>
     <Navbar />
+
       <Routes>
-        <Route path='/' element={<h1>Home</h1>} />
+        <Route path='/' element={<Login/>} />
 
       </Routes>
 
