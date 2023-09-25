@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
+import Navbar from './components/Navbar/Navbar'
 
 
 function App() {
@@ -7,7 +8,7 @@ function App() {
 
   return (
     <div className='App'>
-      <p>Hola Mundo</p>
+    <Navbar />
       <Routes>
         <Route path='/' element={<h1>Home</h1>} />
 
