@@ -1,13 +1,14 @@
-import React from "react";
-import { Link } from "react-router-dom";
+
+import {  NavLink } from "react-router-dom";
+import { logout } from "../../stores/AccessTokenStore";
 
 function Navbar() {
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <div className="container-fluid">
-        <a className="navbar-brand" href="/">
+        <NavLink className="navbar-brand" href="/">
           Hack-ERP
-        </a>
+        </NavLink>
         <button
           className="navbar-toggler"
           type="button"
@@ -22,24 +23,29 @@ function Navbar() {
         <div className="collapse navbar-collapse" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <a className="nav-link" href="/">
+              <NavLink className="nav-link" href="/">
                 Ventas
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="/productos">
+              <NavLink className="nav-link" href="/productos">
                 Producción
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <NavLink className="nav-link" href="#">
                 Almacén
-              </a>
+              </NavLink>
             </li>
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <NavLink className="nav-link" href="#">
                 Compras
-              </a>
+              </NavLink>
+            </li>
+            <li className="nav-item">
+              <button className="nav-link" onClick={logout}>
+                Logout
+              </button>
             </li>
           </ul>
         </div>

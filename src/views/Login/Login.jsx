@@ -42,7 +42,8 @@ const Login = () => {
                 })
                 .catch((err) => {
                     helpers.setStatus({ success: false });
-                    helpers.setErrors({ submit: err.message });
+                    console.log(err);
+                    helpers.setErrors({ submit: err.response.data.message });
                     helpers.setSubmitting(false);
                 })
         }
@@ -54,14 +55,11 @@ const Login = () => {
         },
         []
     );
-
-    console.log(formik.errors)
     return (
         user ? (
-            <Navigate to="/profile" />
+            <Navigate to="/home" />
         ) : (
             <>
-
                 <Box
                     sx={{
                         backgroundColor: 'background.paper',

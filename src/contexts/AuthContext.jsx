@@ -33,9 +33,6 @@ export const AuthContextProvider = ({ children }) => {
   }
 
   useEffect(() => {
-    // If there is a token, verify it
-    // If it's not valid, logout
-    // If it's valid, get the user
     if (getAccessToken()) {
       if ( !verifyJWT(getAccessToken()) ) {
         logout();
