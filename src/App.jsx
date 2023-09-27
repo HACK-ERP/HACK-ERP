@@ -4,6 +4,8 @@ import Login from './views/Login/Login'
 import { useAuthContext } from './contexts/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import Home from './views/Home/Home'
+import Product from "./views/Products/Products";
+import ProductDetails from "./views/ProductDetail/ProductDetails";
 
 function App() {
   const { isAuthenticationFetched } = useAuthContext();
@@ -22,12 +24,14 @@ function App() {
             element={<ProtectedRoute />}
           >
             <Route path='/' element={<Home />} />
+            <Route path="/products" element={<Product />} />
+            <Route path="/products/:id" element={<ProductDetails />} />
           </Route>
         </Routes>
 
       )}
     </div>
-  )
+  );
 }
 
-export default App
+export default App;

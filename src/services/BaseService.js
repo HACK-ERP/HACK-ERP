@@ -1,3 +1,4 @@
+
 import axios from 'axios';
 import { getAccessToken, logout } from '../stores/AccessTokenStore';
 
@@ -12,8 +13,8 @@ import { getAccessToken, logout } from '../stores/AccessTokenStore';
 
 const createHttp = (useAccessToken = false) => {
   const http = axios.create({
-    baseURL: 'http://localhost:3000',
-  })
+    baseURL: "http://localhost:3000",
+  });
 
   if (useAccessToken) {
     http.interceptors.request.use((config) => {
@@ -33,21 +34,24 @@ const createHttp = (useAccessToken = false) => {
       // Any status codes that falls outside the range of 2xx will trigger this function
 
       // If the error is due to an expired token, we'll delete it and redirect to login
-      if (error?.response?.status && [401, 403].includes(error.response.status)) {
+      if (
+        error?.response?.status &&
+        [401, 403].includes(error.response.status)
+      ) {
         if (getAccessToken()) {
           logout();
 
-          if (window.location.pathname !== '/login') {
-            window.location.assign('/login');
+          if (window.location.pathname !== "/login") {
+            window.location.assign("/login");
           }
         }
       }
 
       return Promise.reject(error);
     }
-  )
+  );
 
   return http;
-}
+};
 
 export default createHttp;
