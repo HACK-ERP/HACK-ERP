@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import { createProduct } from "../../services/ProductsService";
 import { Link, useNavigate } from "react-router-dom";
 import { TextField, Button, Typography, Container, Grid } from "@mui/material";
+import MultipleChoice from "./MultipleChoice";
+import { getMaterialList } from "../../services/Materials";
+
 
 const ProductForm = () => {
   const [product, setProduct] = useState({
@@ -9,6 +12,11 @@ const ProductForm = () => {
     description: "",
     price: 0,
     image: "",
+    materials: [{
+      material_id: "",
+      quantity: 0,
+    }],
+    
   });
 
   const navigate = useNavigate();
@@ -20,13 +28,29 @@ const ProductForm = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    createProduct(product)
+    const finalProduct = {
+      ...product,
+      materials: product.materials.map((material) => material.id),
+    }
+    createProduct(finalProduct)
       .then((response) => {
         console.log(response);
         navigate("/products");
       })
       .catch((error) => console.log(error));
   };
+
+  const [materials, setMaterials] = useState([]);
+
+  useEffect(() => {
+    getMaterialList()
+      .then((response) => {
+        console.log(response);
+        setMaterials(response);
+      })
+      .catch((error) => console.log(error));
+  }, []);
+
 
   return (
     <Container>
@@ -75,6 +99,8 @@ const ProductForm = () => {
               onChange={handleChange}
               margin="normal"
             />
+            <MultipleChoice style={{width:"100%"}} value={product.materials} options={materials} onChange={handleChange} />
+
             <Grid item xs={12}>
               <Button
                 variant="contained"

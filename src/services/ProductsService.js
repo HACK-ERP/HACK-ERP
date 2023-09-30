@@ -4,7 +4,7 @@ const http = createHttp(true);
 
 export const getProductList = () => http.get('/hackerp/products?sortBy=createdAt:desc');
 
-export const getProduct = (id) => http.get(`/hackerp/products/${id}`);
+export const getProductDetail = (id) => http.get(`/hackerp/products/${id}`);
 
 export const createProduct = (product) => http.post('/hackerp/products/create', product);
 

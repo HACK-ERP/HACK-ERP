@@ -9,7 +9,7 @@ import {
   Container,
   Box,
 } from "@mui/material";
-import { getProduct } from "../../services/ProductsService";
+import { getProductDetail } from "../../services/ProductsService";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -17,7 +17,7 @@ const ProductDetails = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getProduct(id)
+    getProductDetail(id)
       .then((product) => {
         setProduct(product);
         setLoading(false);

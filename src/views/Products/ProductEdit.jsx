@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { getProduct, updateProduct } from "../../services/ProductsService";
+import { getProductDetail, updateProduct } from "../../services/ProductsService";
 import {
   Container,
   Typography,
@@ -18,7 +18,7 @@ const ProductEdit = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getProduct(id)
+    getProductDetail(id)
       .then((product) => {
         setProduct(product);
         setLoading(false);
