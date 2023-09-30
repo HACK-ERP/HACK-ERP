@@ -24,7 +24,7 @@ const Product = () => {
     deleteProduct(id)
       .then(() => {
         setProducts((prevProducts) =>
-          prevProducts.filter((product) => product._id !== id)
+          prevProducts.filter((product) => product.id !== id)
         );
       })
       .catch((error) => console.log(error));

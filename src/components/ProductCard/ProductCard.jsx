@@ -10,11 +10,11 @@ import {
 
 /* eslint-disable react/prop-types */
 const ProductCard = ({ product, onDelete, nameFontSize }) => {
-  const { _id, name, description, price, image } = product;
+  const { id, name, description, price, image } = product;
 
   return (
     <Card sx={{ border: "1px solid #e0e0e0" }}>
-      <Link to={`/products/${_id}`}>
+      <Link to={`/products/${id}`}>
         <CardMedia component="img" alt={name} height="200" image={image} />
       </Link>
       <CardContent>
@@ -45,7 +45,7 @@ const ProductCard = ({ product, onDelete, nameFontSize }) => {
         </Box>
         <Button
           component={Link}
-          to={`/products/${_id}`}
+          to={`/products/${id}`}
           variant="contained"
           color="primary"
           size="small"
@@ -55,7 +55,7 @@ const ProductCard = ({ product, onDelete, nameFontSize }) => {
         </Button>
         <Button
           component={Link}
-          to={`/products/${_id}/edit`}
+          to={`/products/${id}/edit`}
           variant="contained"
           color="warning"
           size="small"
@@ -64,7 +64,7 @@ const ProductCard = ({ product, onDelete, nameFontSize }) => {
           Editar
         </Button>
         <Button
-          onClick={() => onDelete(_id)}
+          onClick={() => onDelete(id)}
           variant="contained"
           color="error"
           size="small"
