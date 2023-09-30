@@ -4,8 +4,10 @@ import Login from './views/Login/Login'
 import { useAuthContext } from './contexts/AuthContext'
 import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
 import Home from './views/Home/Home'
-import Product from "./views/Products/Products";
-import ProductDetails from "./views/ProductDetail/ProductDetails";
+import ProductsList from "./views/Products/ProductsList";
+import ProductDetails from "./views/Products/ProductDetails";
+import ProductCreate from "./views/Products/ProductCreate";
+import ProductEdit from "./views/Products/ProductEdit";
 
 function App() {
   const { isAuthenticationFetched } = useAuthContext();
@@ -24,8 +26,10 @@ function App() {
             element={<ProtectedRoute />}
           >
             <Route path='/' element={<Home />} />
-            <Route path="/products" element={<Product />} />
+            <Route path="/products" element={<ProductsList />} />
             <Route path="/products/:id" element={<ProductDetails />} />
+            <Route path="/products/create" element={<ProductCreate />} />
+            <Route path="/products/:id/edit" element={<ProductEdit />} /> {/* Agrega esta ruta */}
           </Route>
         </Routes>
 

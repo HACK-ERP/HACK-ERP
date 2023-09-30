@@ -1,56 +1,77 @@
-
-import {  NavLink } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Button,
+  Box,
+  Container,
+  Menu,
+  MenuItem,
+} from "@mui/material";
 import { logout } from "../../stores/AccessTokenStore";
 
 function Navbar() {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+  };
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
-      <div className="container-fluid">
-        <NavLink className="navbar-brand" href="/">
-          Hack-ERP
-        </NavLink>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-          aria-controls="navbarNav"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav">
-            <li className="nav-item">
-              <NavLink className="nav-link" href="/">
-                Ventas
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" href="/productos">
-                Producción
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" href="#">
-                Almacén
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <NavLink className="nav-link" href="#">
-                Compras
-              </NavLink>
-            </li>
-            <li className="nav-item">
-              <button className="nav-link" onClick={logout}>
-                Logout
-              </button>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </nav>
+    <AppBar position="static">
+      <Toolbar>
+        <Container>
+          <div style={{ display: "flex", alignItems: "center" }}>
+            <Typography
+              variant="h6"
+              component={Link}
+              to="/"
+              style={{ textDecoration: "none", color: "inherit" }}
+            >
+              Hack-ERP
+            </Typography>
+            <Box flexGrow={1} />
+            <Button component={Link} to="/" color="inherit">
+              Ventas
+            </Button>
+            <Button component={Link} to="/" color="inherit">
+              Producción
+            </Button>
+            <Button
+              aria-controls="almacen-menu"
+              aria-haspopup="true"
+              onClick={handleMenuOpen}
+              color="inherit"
+            >
+              Almacén
+            </Button>
+            <Menu
+              id="almacen-menu"
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem component={Link} to="/products">
+                Productos
+              </MenuItem>
+            </Menu>
+            <Button component={Link} to="/" color="inherit">
+              Compras
+            </Button>
+            <Button onClick={logout} color="inherit">
+              Logout
+            </Button>
+          </div>
+        </Container>
+      </Toolbar>
+    </AppBar>
   );
 }
 
