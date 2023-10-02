@@ -12,12 +12,14 @@ const ProductForm = () => {
     description: "",
     price: 0,
     image: "",
-    materials: [{
-      material_id: "",
-      quantity: 0,
-    }],
-    
+    materials: [
+      {
+        material_id: "",
+        quantity: 0,
+      },
+    ],
   });
+  const [materials, setMaterials] = useState([]);
 
   const navigate = useNavigate();
 
@@ -27,12 +29,9 @@ const ProductForm = () => {
   };
 
   const handleSubmit = (event) => {
+    console.log(product);
     event.preventDefault();
-    const finalProduct = {
-      ...product,
-      materials: product.materials.map((material) => material.id),
-    }
-    createProduct(finalProduct)
+    createProduct(product)
       .then((response) => {
         console.log(response);
         navigate("/products");
@@ -40,16 +39,21 @@ const ProductForm = () => {
       .catch((error) => console.log(error));
   };
 
-  const [materials, setMaterials] = useState([]);
-
   useEffect(() => {
     getMaterialList()
       .then((response) => {
-        console.log(response);
         setMaterials(response);
       })
       .catch((error) => console.log(error));
   }, []);
+
+  const handleMaterialChange = (materials) => {
+
+    setProduct((prevProduct) => {
+      console.log(materials)
+      return { ...prevProduct, materials: materials };
+    });
+  };
 
 
   return (
@@ -99,8 +103,12 @@ const ProductForm = () => {
               onChange={handleChange}
               margin="normal"
             />
-            <MultipleChoice style={{width:"100%"}} value={product.materials} options={materials} onChange={handleChange} />
-
+            <MultipleChoice
+              style={{ width: "100%" }}
+              value={product.materials}
+              options={materials}
+              onChange={(event, index) => handleMaterialChange(event, index)}
+            />
             <Grid item xs={12}>
               <Button
                 variant="contained"
