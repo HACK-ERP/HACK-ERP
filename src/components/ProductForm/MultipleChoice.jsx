@@ -24,11 +24,63 @@ function getStyles(name, materialName, theme) {
   };
 }
 
-// Al pulsar añadir, se crea un nuevo objeto material con el id y la cantidad
+function arrUnique(arr) {
+  const result = [];
+  const map = new Map();
 
-export default function MultipleChoice({ options, onChange, quantity }) {
+  arr.forEach((obj) => {
+    const { material_id, quantity } = obj;
+
+    if (!map.has(material_id)) {
+      map.set(material_id, quantity);
+    } else {
+      map.set(material_id, Number(map.get(material_id)) + Number(quantity));
+    }
+  });
+
+  map.forEach((quantity, material_id) => {
+    result.push({ material_id, quantity });
+  });
+
+  return result;
+}
+
+
+export default function MultipleChoice({ options, onChange }) {
   const [materialInput, setMaterialInput] = useState([]);
+  const [materialsToSend, setMaterialsToSend] = useState([]);
   const theme = useTheme();
+
+  const handleMaterialChange = (event, index) => {
+    const { value } = event.target;
+    setMaterialInput((prevMaterialInput) => {
+      const newMaterialInput = [...prevMaterialInput];
+      newMaterialInput[index].material_id = value;
+      return newMaterialInput;
+    });
+    
+    setMaterialsToSend(arrUnique(materialInput));
+
+    onChange(materialsToSend);
+  }
+
+  const handleQuantityChange = (event, index) => {
+    const { value } = event.target;
+    setMaterialInput((prevMaterialInput) => {
+      const newMaterialInput = [...prevMaterialInput];
+      newMaterialInput[index].quantity = value;
+      return newMaterialInput;
+    });
+
+    setMaterialsToSend(arrUnique(materialInput));
+
+    const materialToSave = {...materialInput[index]};
+    console.log(materialToSave)
+    materialToSave.quantity = materialInput.filter((material, i) => material.id === materialToSave.id && index !== i).reduce((acc, material) => acc + Number(material.quantity), Number(materialToSave.quantity));
+
+    onChange(materialsToSend);
+  }
+
   return (
     <div>
       {materialInput.map((Inpt, index) => (
@@ -38,11 +90,13 @@ export default function MultipleChoice({ options, onChange, quantity }) {
             <InputLabel variant="standard" htmlFor="uncontrolled-native">
               Material
             </InputLabel>
-            <NativeSelect>
+            <NativeSelect
+              index={index}
+              onChange={(e) => handleMaterialChange(e, index)}>
               {options.map((material) => (
                 <option
                   key={material.id}
-                  value={material}
+                  value={material.id}
                   style={getStyles(material.name, options, theme)}
                 >
                   {material.name}
@@ -55,24 +109,27 @@ export default function MultipleChoice({ options, onChange, quantity }) {
           <Item sx={4}>
           <TextField
             label="Cantidad"
-            id="Cantidad"
+            material_id={options.name}
             name="Cantidad"
             type="number"
             InputProps={{
               inputProps: {
-                min: 0, // Valor mínimo permitido
+                min: 1, // Valor mínimo permitido
                 max: 100, // Valor máximo permitido
               },
             }}
-            value={quantity}
-            onChange={onChange}
+            value={Inpt.quantity}
+            onChange={(e) => handleQuantityChange(e, index)}
           />
           </Item>
 
         </Grid>
       ))}
       <Button
-        onClick={() => setMaterialInput([...materialInput, {}])}
+        onClick={() => setMaterialInput((prevState) => [...prevState, {
+          material_id: options[0].id,
+          quantity: 1,
+        }])}
         color="success"
         variant="contained"
         sx={{ mt: 2 }}
