@@ -1,9 +1,9 @@
-import { Route, Routes } from 'react-router-dom'
-import './App.css'
-import Login from './views/Login/Login'
-import { useAuthContext } from './contexts/AuthContext'
-import ProtectedRoute from './components/ProtectedRoute/ProtectedRoute'
-import Home from './views/Home/Home'
+import { Route, Routes } from "react-router-dom";
+import "./App.css";
+import Login from "./views/Login/Login";
+import { useAuthContext } from "./contexts/AuthContext";
+import ProtectedRoute from "./components/ProtectedRoute/ProtectedRoute";
+import Home from "./views/Home/Home";
 import ProductsList from "./views/Products/ProductsList";
 import ProductDetails from "./views/Products/ProductDetails";
 import ProductCreate from "./views/Products/ProductCreate";
@@ -12,27 +12,21 @@ import ProductEdit from "./views/Products/ProductEdit";
 function App() {
   const { isAuthenticationFetched } = useAuthContext();
 
-
   return (
-    <div className='App'>
+    <div className="App">
       {!isAuthenticationFetched ? (
         <div>Loading...</div>
       ) : (
-
         <Routes>
-          <Route path='/login' element={<Login />} />
-          <Route
-            path='/'
-            element={<ProtectedRoute />}
-          >
-            <Route path='/' element={<Home />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/" element={<ProtectedRoute />}>
+            <Route path="/" element={<Home />} />
             <Route path="/products" element={<ProductsList />} />
             <Route path="/products/:id" element={<ProductDetails />} />
             <Route path="/products/create" element={<ProductCreate />} />
-            <Route path="/products/:id/edit" element={<ProductEdit />} /> {/* Agrega esta ruta */}
+            <Route path="/products/:id/edit" element={<ProductEdit />} />
           </Route>
         </Routes>
-
       )}
     </div>
   );
