@@ -29,6 +29,11 @@ const ProductCard = ({ product, onDelete, nameFontSize }) => {
           variant="h5"
           component="div"
           style={{ fontSize: nameFontSize, fontWeight: "bold" }}
+          sx={{
+              whiteSpace: "nowrap",
+              overflow: "hidden",
+              textOverflow: "ellipsis",
+            }}
         >
           {name}
         </Typography>

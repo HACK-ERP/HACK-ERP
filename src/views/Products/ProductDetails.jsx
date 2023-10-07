@@ -36,7 +36,15 @@ const ProductDetails = () => {
     return <Typography>Product not found</Typography>;
   }
 
-  const { name, description, image, price } = product;
+  const { name, description, image } = product;
+
+  const priceCalc = (product) => {
+    console.log(product)
+    const totalPrice = product.materials.reduce((acc, material) => {
+      return acc + Number(material.material_id.price) * Number(material.quantity);
+    }, 0);
+    return totalPrice; 
+  }
 
   return (
     <Container>
@@ -54,7 +62,7 @@ const ProductDetails = () => {
             <Typography variant="body1" paragraph>
               {description}
             </Typography>
-            <Typography variant="h6">Precio: {price} €</Typography>
+            <Typography variant="h6">Precio: {priceCalc(product)} €</Typography>
             <Link to="/products" style={{ textDecoration: "none" }}>
               <Button
                 variant="contained"
