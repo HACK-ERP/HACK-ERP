@@ -9,9 +9,9 @@ import { Animation } from "@devexpress/dx-react-chart";
 import "../../assets/css/PieChart.css"
 
 const data = [
-  { product: "Producto1", area: 40 },
-  { product: "Producto2", area: 20 },
-  { product: "Producto3", area: 30 },
+  { product: "Pendiente", area: 40 },
+  { product: "En Proceso", area: 20 },
+  { product: "Entregado", area: 30 },
 ];
 
 export default class PieChart extends React.PureComponent {
@@ -30,7 +30,7 @@ export default class PieChart extends React.PureComponent {
         <div className="pie-chart-container">
         <Chart data={chartData}>
           <PieSeries valueField="area" argumentField="product" />
-          <Title text="Productos Vendidos" />
+          <Title text="Estado de Producción" />
           <Animation />
           <Legend position="bottom" />
         </Chart>
