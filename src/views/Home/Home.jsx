@@ -5,6 +5,9 @@ import { OverviewLatestProducts } from "../../components/overview/overview-lates
 import { OverviewTasksProgress } from "../../components/overview/overview-tasks-progress";
 import { OverviewTotalCustomers } from "../../components/overview/overview-total-customers";
 import { OverviewTotalProfit } from "../../components/overview/overview-total-profit";
+import Chart from "../../components/overview/Chart";
+import Paper from "@mui/material/Paper";
+import PieChart from "../../components/overview/PieChart";
 
 const Page = () => (
   <>
@@ -22,7 +25,7 @@ const Page = () => (
               difference={12}
               positive
               sx={{ height: "100%" }}
-              value="$24k"
+              value="24k €"
             />
           </Grid>
           <Grid xs={12} sm={6} lg={3}>
@@ -34,10 +37,36 @@ const Page = () => (
             />
           </Grid>
           <Grid xs={12} sm={6} lg={3}>
-            <OverviewTasksProgress sx={{ height: "100%" }} value={75.5} />
+            <OverviewTasksProgress sx={{ height: "100%" }} value={50} />
           </Grid>
           <Grid xs={12} sm={6} lg={3}>
-            <OverviewTotalProfit sx={{ height: "100%" }} value="$15k" />
+            <OverviewTotalProfit sx={{ height: "100%" }} value="15k €" />
+          </Grid>
+          <Grid item xs={12} md={8} lg={9}>
+            <Paper
+              sx={{
+                p: 1,
+                display: "flex",
+                flexDirection: "column",
+                height: 500,
+                width: "100%",
+              }}
+            >
+              <Chart />
+            </Paper>
+          </Grid>
+          <Grid item xs={12} md={4} lg={3}>
+            <Paper
+              sx={{
+                p: 1,
+                display: "flex",
+                flexDirection: "column",
+                height: 500,
+                width: "100%",
+              }}
+            >
+              <PieChart />
+            </Paper>
           </Grid>
           <Grid xs={12} md={6} lg={4}>
             <OverviewLatestProducts sx={{ height: "100%" }} />
