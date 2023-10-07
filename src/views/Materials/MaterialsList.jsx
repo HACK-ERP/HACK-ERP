@@ -138,7 +138,7 @@ export default function MaterialList() {
                         ).map((material) => (
                             <TableRow key={material.id}>
                                 <TableCell component="th" scope="row">
-                                <Link href={`/materials/${material.id}`} sx={{textDecoration:"none"}}>
+                                <Link href={`/materials/${material.id}`} color="inherit" sx={{textDecoration:"none"}}>
                                     {material.name}
                                 </Link>
                                 </TableCell>
