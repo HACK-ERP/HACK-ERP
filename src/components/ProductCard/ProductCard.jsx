@@ -10,7 +10,14 @@ import {
 
 /* eslint-disable react/prop-types */
 const ProductCard = ({ product, onDelete, nameFontSize }) => {
-  const { id, name, description, price, image } = product;
+  const { id, name, description, image } = product;
+
+  const priceCalc = (product) => {
+    const totalPrice = product.materials.reduce((acc, material) => {
+      return acc + Number(material.material_id.price) * Number(material.quantity);
+    }, 0);
+    return totalPrice; 
+  }
 
   return (
     <Card sx={{ border: "1px solid #e0e0e0" }}>
@@ -40,7 +47,7 @@ const ProductCard = ({ product, onDelete, nameFontSize }) => {
         </Box>
         <Box mt={2}>
           <Typography variant="body2" color="text.secondary">
-            Precio: <span className="fw-bold">{price} € </span>
+            Precio: <span className="fw-bold">{priceCalc(product)} € </span>
           </Typography>
         </Box>
         <Button

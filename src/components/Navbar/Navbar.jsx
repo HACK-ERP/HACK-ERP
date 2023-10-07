@@ -61,6 +61,9 @@ function Navbar() {
               <MenuItem component={Link} to="/products">
                 Productos
               </MenuItem>
+              <MenuItem component={Link} to="/materials">
+                Materiales
+              </MenuItem>
             </Menu>
             <Button component={Link} to="/" color="inherit">
               Compras
