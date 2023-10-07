@@ -17,6 +17,7 @@ import {
 } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getProductList } from "../../services/ProductsService";
+import { Link } from "react-router-dom";
 
 export const OverviewLatestProducts = (sx) => {
   const [products, setProducts] = useState({});
@@ -44,7 +45,7 @@ export const OverviewLatestProducts = (sx) => {
 
   return (
     <Card sx={sx}>
-      <CardHeader title="Latest Products" />
+      <CardHeader title="Últimas Compras" />
       <List>
         {products.map((product, index) => {
           if (index < 6) {
@@ -87,17 +88,19 @@ export const OverviewLatestProducts = (sx) => {
       </List>
       <Divider />
       <CardActions sx={{ justifyContent: "flex-end" }}>
-        <Button
-          color="inherit"
-          endIcon={
-            <SvgIcon fontSize="small">
-              <ArrowRightIcon />
-            </SvgIcon>
-          }
-          size="small"
-        >
-          View all
-        </Button>
+        <Link to="/products" style={{ textDecoration: "none", color: "inherit" }}>
+          <Button
+            color="inherit"
+            endIcon={
+              <SvgIcon fontSize="small">
+                <ArrowRightIcon />
+              </SvgIcon>
+            }
+            size="small"
+          >
+            Ver compras
+          </Button>
+        </Link>
       </CardActions>
     </Card>
   );

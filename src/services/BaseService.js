@@ -2,15 +2,6 @@
 import axios from 'axios';
 import { getAccessToken, logout } from '../stores/AccessTokenStore';
 
-// const http = axios.create({
-//   baseURL: 'http://localhost:3001/api',
-//   withCredentials: false
-// })
-
-// http.interceptors.response.use((response) => response.data);
-
-// export default http
-
 const createHttp = (useAccessToken = false) => {
   const http = axios.create({
     baseURL: "http://localhost:3001",
