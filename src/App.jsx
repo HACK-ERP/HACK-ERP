@@ -12,6 +12,7 @@ import ProductEdit from "./views/Products/ProductEdit";
 
 import MaterialList from "./views/Materials/MaterialsList";
 import MaterialDetails from "./views/Materials/MaterialDetails";
+import MaterialsCreate from "./views/Materials/MaterialsCreate";
 
 function App() {
   const { isAuthenticationFetched } = useAuthContext();
@@ -37,8 +38,8 @@ function App() {
 
             <Route path="/materials" element={<MaterialList />} />
             <Route path="/materials/:id" element={<MaterialDetails />} />
-{/*             <Route path="/materials/create" element={<ProductCreate />} />
-            <Route path="/materials/:id/edit" element={<ProductEdit />} /> */}
+            <Route path="/materials/create" element={<MaterialsCreate />} />
+{/*             <Route path="/materials/:id/edit" element={<ProductEdit />} /> */}
 {/* 
 
 

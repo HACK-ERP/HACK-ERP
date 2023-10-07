@@ -38,6 +38,9 @@ function Navbar() {
             </Typography>
             <Box flexGrow={1} />
             <Button component={Link} to="/" color="inherit">
+              Gestión de Personal
+            </Button>
+            <Button component={Link} to="/" color="inherit">
               Ventas
             </Button>
             <Button component={Link} to="/" color="inherit">
