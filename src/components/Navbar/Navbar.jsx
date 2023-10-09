@@ -14,6 +14,11 @@ import { logout } from "../../stores/AccessTokenStore";
 
 function Navbar() {
   const [anchorEl, setAnchorEl] = useState(null);
+  const [salesMenuAnchorEl, setSalesMenuAnchorEl] = useState(null);
+
+  const handleSalesMenuOpen = (event) => {
+    setSalesMenuAnchorEl(event.currentTarget);
+  };
 
   const handleMenuOpen = (event) => {
     setAnchorEl(event.currentTarget);
@@ -21,6 +26,7 @@ function Navbar() {
 
   const handleMenuClose = () => {
     setAnchorEl(null);
+    setSalesMenuAnchorEl(null);
   };
 
   return (
@@ -40,9 +46,25 @@ function Navbar() {
             <Button component={Link} to="/" color="inherit">
               Gestión de Personal
             </Button>
-            <Button component={Link} to="/" color="inherit">
+            <Button 
+              aria-controls="sales-menu"
+              aria-haspopup="true"
+              onClick={handleSalesMenuOpen}
+              color="inherit"
+            >
               Ventas
             </Button>
+            <Menu
+              id="sales-menu"
+              anchorEl={salesMenuAnchorEl}
+              keepMounted
+              open={Boolean(salesMenuAnchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem component={Link} to="/budget">
+               Presupuestos
+              </MenuItem>
+            </Menu>
             <Button component={Link} to="/" color="inherit">
               Producción
             </Button>
