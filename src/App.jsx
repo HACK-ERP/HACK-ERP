@@ -15,6 +15,9 @@ import MaterialDetails from "./views/Materials/MaterialDetails";
 import MaterialsCreate from "./views/Materials/MaterialsCreate";
 import BudgetList from "./views/Sales/BudgetsList";
 import BudgetForm from "./views/Sales/BudgetForm";
+import UserList from "./views/Users/UsersList";
+import UserCreate from "./views/Users/UserCreate";
+
 
 function App() {
   const { isAuthenticationFetched } = useAuthContext();
@@ -46,6 +49,12 @@ function App() {
 
             <Route path="/budget" element={<BudgetList />} />
             <Route path="/budget/create" element={<BudgetForm />} />
+
+            {/* Users routes */}
+
+            <Route path="/users" element={<UserList />} />
+            <Route path="/users/create" element={<UserCreate />} />
+            {/* <Route path="/user/:id" element={<UserDetails />} /> */}
 
           </Route>
         </Routes>
