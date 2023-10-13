@@ -1,23 +1,15 @@
-import PropTypes from 'prop-types';
+import { Box, Container, IconButton, Link, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, Typography } from "@mui/material";
 import { useTheme } from '@mui/material/styles';
-import Box from '@mui/material/Box';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableFooter from '@mui/material/TableFooter';
-import TablePagination from '@mui/material/TablePagination';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
-import IconButton from '@mui/material/IconButton';
-import FirstPageIcon from '@mui/icons-material/FirstPage';
-import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
-import { Button, Container, Link, TableHead, Typography } from '@mui/material';
-import { Link as RouterLink } from 'react-router-dom';
-import { useEffect, useState } from 'react';
-import { getMaterialList } from '../../services/Materials';
+import FirstPageIcon from '@mui/icons-material/FirstPage';
+import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
+import { useEffect, useState } from "react";
+import { getOTList } from "../../services/OTService";
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
+import PropTypes from 'prop-types';
+import { getProductList } from "../../services/ProductsService";
+
 
 function TablePaginationActions(props) {
     const theme = useTheme();
@@ -38,6 +30,7 @@ function TablePaginationActions(props) {
     const handleLastPageButtonClick = (event) => {
         onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
     };
+
 
     return (
         <Box sx={{ flexShrink: 0, ml: 2.5 }}>
@@ -73,77 +66,98 @@ function TablePaginationActions(props) {
     );
 }
 
+
 TablePaginationActions.propTypes = {
     count: PropTypes.number.isRequired,
     onPageChange: PropTypes.func.isRequired,
     page: PropTypes.number.isRequired,
     rowsPerPage: PropTypes.number.isRequired,
-};
+}
 
+export default function OTList() {
 
-export default function MaterialList() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
-    const [materials, setMaterials] = useState([]);
+    const [otList, setOtList] = useState([]);
+    const [products, setProducts] = useState([]);
 
     useEffect(() => {
-        getMaterialList()
-        .then(response => {
-            setMaterials(response)
-        })
-    }, [])
+        getOTList().then((response) => {
+            setOtList(response);
+        });
+    }
+        , []);
 
-    const emptyRows =
-        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - materials.length) : 0;
+    useEffect(() => {
+        getProductList().then((response) => {
+            setProducts(response);
+        });
+    })
+
+
+    const productsToShow = (ot) => {
+        const productsForOT = products.filter((product) => {
+            return ot.products.some((otProduct) => otProduct.product_id === product.id);
+        });
+        return productsForOT.map((product) => product.name).join(', ');
+    };
+
+    const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - otList.length) : 0;
 
     const handleChangePage = (event, newPage) => {
         setPage(newPage);
-    };
+    }
 
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
-    };
+    }
 
     return (
         <Container>
-            <Typography variant="h3" gutterBottom style={{ marginTop: "20px" }}>
-                Materiales
+            <Typography variant="h4" align="center" component="h1" gutterBottom>
+                Lista de Ordenes de Trabajo
             </Typography>
-            <Button
-                component={RouterLink}
-                to="/materials/create"
-                variant="contained"
-                color="primary"
-                sx={{ marginBottom: 3 }}
-            >
-                Crear Material
-            </Button>
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Nombre</TableCell>
-                            <TableCell align="right">Stock</TableCell>
-                            <TableCell align="right">Precio</TableCell>
+                            <TableCell align="center">OT</TableCell>
+                            <TableCell align="center">products</TableCell>
+                            <TableCell align="center">Status</TableCell>
+                            <TableCell align="center">Actions</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {(rowsPerPage > 0
-                            ? materials.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            : materials
-                        ).map((material) => (
-                            <TableRow key={material.id}>
-                                <TableCell component="th" scope="row">
-                                <Link href={`/materials/${material.id}`} color="inherit" sx={{textDecoration:"none"}}>
-                                    {material.name}
-                                </Link>
+                            ? otList.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            : otList
+                        ).map((ot) => (
+                            <TableRow key={ot.id}>
+                                <TableCell align="center">
+                                    {ot.code}
                                 </TableCell>
-                                <TableCell style={{ width: 160 }} align="right">
-                                    {material.stock}
+                                <TableCell align="center">
+                                    {productsToShow(ot)}
                                 </TableCell>
-                                <TableCell style={{ width: 160 }} align="right">
-                                    {material.price}
+                                <TableCell align="center">
+                                    {ot.status}
+                                </TableCell>
+                                <TableCell align="center">
+                                    <IconButton
+                                        aria-label="edit"
+                                        component={Link}
+                                        to={`/production/ot/edit/${ot.id}`}
+                                    >
+                                        <EditIcon />
+                                    </IconButton>
+                                    <IconButton
+                                        aria-label="delete"
+                                        component={Link}
+                                        to={`/production/ot/delete/${ot.id}`}
+                                    >
+                                        <DeleteIcon />
+                                    </IconButton>
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -152,13 +166,14 @@ export default function MaterialList() {
                                 <TableCell colSpan={6} />
                             </TableRow>
                         )}
+
                     </TableBody>
                     <TableFooter>
                         <TableRow>
                             <TablePagination
                                 rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                                 colSpan={3}
-                                count={materials.length}
+                                count={otList.length}
                                 rowsPerPage={rowsPerPage}
                                 page={page}
                                 SelectProps={{
@@ -178,3 +193,6 @@ export default function MaterialList() {
         </Container>
     );
 }
+
+
+
