@@ -82,7 +82,7 @@ export default function BudgetForm() {
   useEffect(() => {
     const activeClient = [...clients].find((client) => client.id === budget.client);
     setActiveClient(activeClient);
-  }, [budget.client]);
+  }, [budget.client, clients]);
   console.log(activeClient);
 
 
