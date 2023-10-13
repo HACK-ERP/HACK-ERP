@@ -102,9 +102,6 @@ export default function OTList() {
         return productsForOT.map((product) => product.name).join(', ');
     };
 
-
-
-
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - otList.length) : 0;
 
     const handleChangePage = (event, newPage) => {
