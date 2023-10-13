@@ -1,1 +1,2 @@
 poner el logo de los clientes en la lista de budget
+agregar la lista de materiales que lo componen en el detalle del producto

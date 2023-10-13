@@ -89,7 +89,6 @@ export default function BudgetList() {
     useEffect(() => {
         getBudgetList()
         .then(response => {
-            console.log(response)
             setBudget(response)
         })
     }, [])
@@ -115,7 +114,7 @@ export default function BudgetList() {
             </Typography>
             <Button
                 component={RouterLink}
-                to="/materials/create"
+                to="/budget/create"
                 variant="contained"
                 color="primary"
                 sx={{ marginBottom: 3 }}

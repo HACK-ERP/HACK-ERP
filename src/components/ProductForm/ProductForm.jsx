@@ -20,6 +20,7 @@ const ProductForm = () => {
     ],
   });
   const [materials, setMaterials] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0); 
 
   const navigate = useNavigate();
 
@@ -29,11 +30,11 @@ const ProductForm = () => {
   };
 
   const handleSubmit = (event) => {
-    console.log(product);
     event.preventDefault();
+    product.price = totalPrice;
     createProduct(product)
-      .then((response) => {
-        console.log(response);
+      .then(() => {
+
         navigate("/products");
       })
       .catch((error) => console.log(error));
@@ -47,13 +48,17 @@ const ProductForm = () => {
       .catch((error) => console.log(error));
   }, []);
 
+  
   const handleMaterialChange = (materials) => {
-
     setProduct((prevProduct) => {
-      console.log(materials)
       return { ...prevProduct, materials: materials };
     });
+    const newTotalPrice = materials.reduce((total, material) => {
+      return total + material.price * material.quantity;
+    }, 0);
+    setTotalPrice(newTotalPrice);
   };
+  
 
 
   return (
@@ -81,16 +86,6 @@ const ProductForm = () => {
               fullWidth
               name="description"
               value={product.description}
-              onChange={handleChange}
-              margin="normal"
-            />
-            <TextField
-              label="Precio"
-              variant="outlined"
-              fullWidth
-              type="number"
-              name="price"
-              value={product.price}
               onChange={handleChange}
               margin="normal"
             />
