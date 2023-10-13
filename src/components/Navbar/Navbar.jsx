@@ -15,19 +15,28 @@ import { logout } from "../../stores/AccessTokenStore";
 function Navbar() {
   const [anchorEl, setAnchorEl] = useState(null);
   const [salesMenuAnchorEl, setSalesMenuAnchorEl] = useState(null);
+  const [userMenuAnchorEl, setUserMenuAnchorEl] = useState(null);
+
+  
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  }
 
   const handleSalesMenuOpen = (event) => {
     setSalesMenuAnchorEl(event.currentTarget);
-  };
+  }
 
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
+  const handleUserMenuOpen = (event) => {
+    setUserMenuAnchorEl(event.currentTarget);
+  }
 
   const handleMenuClose = () => {
     setAnchorEl(null);
     setSalesMenuAnchorEl(null);
-  };
+    setUserMenuAnchorEl(null);
+  }
+
+  
 
   return (
     <AppBar position="static">
@@ -43,10 +52,26 @@ function Navbar() {
               Hack-ERP
             </Typography>
             <Box flexGrow={1} />
-            <Button component={Link} to="/" color="inherit">
+            <Button
+              aria-controls="user-menu"
+              aria-haspopup="true"
+              onClick={handleUserMenuOpen}
+              color="inherit"
+            >
               Gestión de Personal
             </Button>
-            <Button 
+            <Menu
+              id="user-menu"
+              anchorEl={userMenuAnchorEl}
+              keepMounted
+              open={Boolean(userMenuAnchorEl)}
+              onClose={handleMenuClose}
+            >
+              <MenuItem component={Link} to="/users">
+              Personal
+              </MenuItem>
+              </Menu>
+            <Button
               aria-controls="sales-menu"
               aria-haspopup="true"
               onClick={handleSalesMenuOpen}
@@ -62,7 +87,7 @@ function Navbar() {
               onClose={handleMenuClose}
             >
               <MenuItem component={Link} to="/budget">
-               Presupuestos
+                Presupuestos
               </MenuItem>
             </Menu>
             <Button component={Link} to="/" color="inherit">
