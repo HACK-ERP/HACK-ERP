@@ -13,10 +13,15 @@ import ProductEdit from "./views/Products/ProductEdit";
 import MaterialList from "./views/Materials/MaterialsList";
 import MaterialDetails from "./views/Materials/MaterialDetails";
 import MaterialsCreate from "./views/Materials/MaterialsCreate";
+
 import BudgetList from "./views/Sales/BudgetsList";
 import BudgetForm from "./views/Sales/BudgetForm";
+
 import UserList from "./views/Users/UsersList";
 import UserCreate from "./views/Users/UserCreate";
+
+import OTList from "./views/Production/OTList";
+import OTDetails from "./views/Production/OTDetails";
 
 
 function App() {
@@ -55,6 +60,9 @@ function App() {
             <Route path="/users" element={<UserList />} />
             <Route path="/users/create" element={<UserCreate />} />
             {/* <Route path="/user/:id" element={<UserDetails />} /> */}
+            {/* OT */}
+            <Route path="/ot" element={<OTList />} />
+            <Route path="/ot/:id" element={<OTDetails />} />
 
           </Route>
         </Routes>

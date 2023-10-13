@@ -166,7 +166,7 @@ export default function BudgetForm() {
               <Typography variant="subtitle1">
                 La orden de pedido número <strong>{budgetNumber}</strong> ha sido enviada al correo <strong>{activeClient.Email}</strong> del cliente <strong>{activeClient.RS}</strong> con los detalles de la orden.
                 El cliente deberá confirmar la orden para que se pueda proceder con la misma.
-                <Button href="" onClick={() => navigate("/app/sales/budgets")} sx={{ mt: 3 }}>
+                <Button href="" onClick={() => navigate("/budget")} sx={{ mt: 3 }}>
                   Volver a la lista de presupuestos
                 </Button>
 
