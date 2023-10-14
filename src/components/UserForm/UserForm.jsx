@@ -1,11 +1,24 @@
 import { useState } from "react";
 import { createUser } from "../../services/UsersService";
 import { Link, useNavigate } from "react-router-dom";
-import { TextField, Button, Typography, Container, Grid } from "@mui/material";
+import {
+  TextField,
+  Button,
+  Typography,
+  Container,
+  Grid,
+  FormControl,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
 
 const UserForm = () => {
   const [user, setUser] = useState({
+    avatar: "",
     name: "",
+    surname: "",
+    phone: "",
     email: "",
     password: "",
     role: "",
@@ -16,6 +29,11 @@ const UserForm = () => {
   const handleChange = (event) => {
     const { name, value } = event.target;
     setUser({ ...user, [name]: value });
+  };
+
+  const handleRoleChange = (event) => {
+    const value = event.target.value; // Obtiene el valor de la selección de rol
+    setUser({ ...user, role: value }); // Actualiza solo el campo de rol
   };
 
   const handleSubmit = (event) => {
@@ -30,68 +48,95 @@ const UserForm = () => {
 
   return (
     <Container>
-      <Typography variant="h4" component="h1" align="center">
-        Crear Usuario
-      </Typography>
-      <form onSubmit={handleSubmit}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
+      <Grid container spacing={1}>
+        <Grid item xs={12}>
+          <Typography variant="h3" gutterBottom style={{ marginTop: "30px" }}>
+            Crear un empleado
+          </Typography>
+        </Grid>
+        <Grid item xs={12} sm={7}>
+          <form onSubmit={handleSubmit}>
             <TextField
-              fullWidth
-              label="Nombre"
-              name="name"
-              size="small"
+              label="Avatar"
               variant="outlined"
+              fullWidth
+              name="avatar"
+              value={user.avatar}
+              onChange={handleChange}
+              margin="normal"
+            />
+            <TextField
+              label="Nombre"
+              variant="outlined"
+              fullWidth
+              name="name"
               value={user.name}
               onChange={handleChange}
+              margin="normal"
             />
-          </Grid>
-          <Grid item xs={12}>
             <TextField
-              fullWidth
-              label="Email"
-              name="email"
-              size="small"
+              label="Apellidos"
               variant="outlined"
+              fullWidth
+              name="surname"
+              value={user.surname}
+              onChange={handleChange}
+              margin="normal"
+            />
+            <TextField
+              label="Teléfono"
+              variant="outlined"
+              fullWidth
+              name="phone"
+              value={user.phone}
+              onChange={handleChange}
+              margin="normal"
+            />
+            <TextField
+              label="Email"
+              variant="outlined"
+              fullWidth
+              name="email"
               value={user.email}
               onChange={handleChange}
+              margin="normal"
             />
-          </Grid>
-          <Grid item xs={12}>
             <TextField
-              fullWidth
-              label="Contraseña"
-              name="password"
-              size="small"
-              type="password"
+              label="Password"
               variant="outlined"
+              fullWidth
+              name="password"
               value={user.password}
               onChange={handleChange}
+              margin="normal"
             />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              fullWidth
-              label="Rol"
-              name="role"
-              size="small"
-              variant="outlined"
-              value={user.role}
-              onChange={handleChange}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <Button
-              fullWidth
-              type="submit"
-              variant="contained"
-              color="primary"
-              size="large"
-            >
-              Crear Usuario
-            </Button>
+            <FormControl fullWidth>
+              <InputLabel id="demo-simple-select-label">Rol</InputLabel>
+              <Select
+                labelId="demo-simple-select-label"
+                id="demo-simple-select"
+                value={user.role}
+                label="Rol"
+                onChange={handleRoleChange}
+              >
+                <MenuItem value={"SALES"}>SALES</MenuItem>
+                <MenuItem value={"PRODUCTION"}>PRODUCTION</MenuItem>
+                <MenuItem value={"WAREHOUSE"}>WAREHOUSE</MenuItem>
+                <MenuItem value={"PURCHASING"}>PURCHASING</MenuItem>
+                <MenuItem value={"ADMIN"}>ADMIN</MenuItem>
+              </Select>
+            </FormControl>
+            <Grid item xs={12}>
+              <Button
+                variant="contained"
+                color="primary"
+                type="submit"
+                style={{ marginTop: "16px", marginRight: "16px" }}
+              >
+                Crear
+              </Button>
 
-            <Link to="/users" style={{ textDecoration: "none" }}>
+              <Link to="/users" style={{ textDecoration: "none" }}>
                 <Button
                   variant="outlined"
                   color="primary"
@@ -100,9 +145,10 @@ const UserForm = () => {
                   Volver a la lista de empleados
                 </Button>
               </Link>
-          </Grid>
+            </Grid>
+          </form>
         </Grid>
-      </form>
+      </Grid>
     </Container>
   );
 };

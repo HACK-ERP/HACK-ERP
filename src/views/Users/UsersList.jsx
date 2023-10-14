@@ -148,7 +148,7 @@ export default function UserList() {
               <TableRow key={user.id}>
                 <TableCell component="th" scope="row">
                   <Link
-                    href={`/users/${user.id}`}
+                    href={`/user/${user.id}`}
                     color="inherit"
                     sx={{ textDecoration: "none" }}
                   >
@@ -161,7 +161,7 @@ export default function UserList() {
                 </TableCell>
                 <TableCell component="th" scope="row">
                   <Link
-                    href={`/users/${user.id}`}
+                    href={`/user/${user.id}`}
                     color="inherit"
                     sx={{ textDecoration: "none" }}
                   >
