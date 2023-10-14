@@ -19,6 +19,7 @@ import BudgetForm from "./views/Sales/BudgetForm";
 
 import UserList from "./views/Users/UsersList";
 import UserCreate from "./views/Users/UserCreate";
+import UserDetails from "./views/Users/UserDetails"
 
 import OTList from "./views/Production/OTList";
 import OTDetails from "./views/Production/OTDetails";
@@ -59,6 +60,9 @@ function App() {
 
             <Route path="/users" element={<UserList />} />
             <Route path="/users/create" element={<UserCreate />} />
+
+            <Route path="/user/:id" element={<UserDetails />} />
+
             {/* <Route path="/user/:id" element={<UserDetails />} /> */}
             {/* OT */}
             <Route path="/ot" element={<OTList />} />
