@@ -13,14 +13,12 @@ import { getClientsList } from '../../services/ClientsService';
 import { TextField } from '@mui/material';
 
 
-export default function OrderForm({ setBudget, productsToSend, setProductsToSend, productInput, setProductInput, products, setProducts, clients, setClients, setBudgetNumber, handleSubmit }) {
+export default function OrderForm({ setBudget, productsToSend, setProductsToSend, productInput, setProductInput, products, setProducts, clients, setClients, setBudgetNumber, handleSubmit, budget }) {
 
-  const [selectedClient, setSelectedClient] = useState("");
+  const defaultSelectedClient = clients.find((client) => client.id === budget.client);
+  const [selectedClient, setSelectedClient] = useState(defaultSelectedClient?.RS ? defaultSelectedClient.RS : "");
   const [deliveryDate, setDeliveryDate] = useState("");
-const [comments, setComments] = useState("");
-
-
-
+  const [comments, setComments] = useState("");
 
   useEffect(() => {
     getProductList().then((response) => {

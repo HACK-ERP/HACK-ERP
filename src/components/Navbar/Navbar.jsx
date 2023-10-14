@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "@mui/material";
 import {
   AppBar,
   Toolbar,
-  Typography,
   Button,
   Box,
   Container,
@@ -48,14 +47,13 @@ function Navbar() {
       <Toolbar>
         <Container>
           <div style={{ display: "flex", alignItems: "center" }}>
-            <Typography
+            <Link
               variant="h6"
-              component={Link}
-              to="/"
+              href="/home"
               style={{ textDecoration: "none", color: "inherit" }}
             >
               Hack-ERP
-            </Typography>
+            </Link>
             <Box flexGrow={1} />
             <Button
               aria-controls="user-menu"

@@ -57,7 +57,7 @@ const Login = () => {
     );
     return (
         user ? (
-            <Navigate to="/home" />
+            <Navigate to="/" />
         ) : (
             <>
                 <Box
