@@ -1,19 +1,30 @@
 /* eslint-disable react/prop-types */
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuthContext } from '/src/contexts/AuthContext';
-import Navbar from "../Navbar/Navbar";
+import {TotalBar} from "../TotalBar/TotalBar";
+
 
 const ProtectedRoute = () => {
   const { user } = useAuthContext();
+  const Page = () => {
+    return (
+      <>
+        <Outlet />
+      </>
+    );
+  }
   
   if (!user) {
     return <Navigate to="/login" />
   }
 
   return (
+
+
     <>
-    <Navbar />
-    <Outlet />
+    <TotalBar>
+    {Page()}
+    </TotalBar>
     </>
   );
 }

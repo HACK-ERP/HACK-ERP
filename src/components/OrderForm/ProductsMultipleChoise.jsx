@@ -116,11 +116,11 @@ export default function ProductsMultipleChoice({ options, onChange, productsToSe
       <Button
         onClick={() =>
           setProductInput((prevState) => [
+            ...prevState,
             {
               product_id: options[0].id,
               quantity: 1,
-            },
-            ...prevState,
+            }
           ])
         }
         color="success"
