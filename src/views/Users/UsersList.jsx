@@ -14,7 +14,7 @@ import FirstPageIcon from "@mui/icons-material/FirstPage";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
-import { Button, Container, Link, TableHead, Typography } from "@mui/material";
+import { Avatar, Button, Container, Link, TableHead, Typography } from "@mui/material";
 import { Link as RouterLink } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { getUsersList } from "../../services/UsersService";
@@ -134,7 +134,7 @@ export default function UserList() {
               <TableCell>Nombre</TableCell>
               <TableCell>Teléfono</TableCell>
               <TableCell align="center">Email</TableCell>
-              <TableCell align="center">Rol</TableCell>
+              <TableCell align="center">Cargo</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -152,11 +152,7 @@ export default function UserList() {
                     color="inherit"
                     sx={{ textDecoration: "none" }}
                   >
-                    <img
-                      src={user.avatar}
-                      alt={`Avatar de ${user.name}`}
-                      width="70"
-                    />
+                    <Avatar alt={`Avatar de ${user.name}`} src={user.avatar} />
                   </Link>
                 </TableCell>
                 <TableCell component="th" scope="row">

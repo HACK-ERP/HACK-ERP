@@ -1,9 +1,5 @@
 import { useTheme, styled } from "@mui/material/styles";
-/* import OutlinedInput from "@mui/material/OutlinedInput";
-import MenuItem from "@mui/material/MenuItem";
-import Select from "@mui/material/Select"; */
 import { Button, Grid, InputLabel, NativeSelect, Paper, TextField } from "@mui/material";
-
 import { FormControl } from "@mui/base";
 import { useState } from "react";
 
@@ -29,22 +25,23 @@ function arrUnique(arr) {
   const map = new Map();
 
   arr.forEach((obj) => {
-    const { material_id, quantity } = obj;
+    const { material_id, quantity, price } = obj;
 
     if (!map.has(material_id)) {
-      map.set(material_id, quantity);
+      map.set(material_id, { quantity, price });
     } else {
-      map.set(material_id, Number(map.get(material_id)) + Number(quantity));
+      const existingMaterial = map.get(material_id);
+      existingMaterial.quantity += quantity;
+      map.set(material_id, existingMaterial);
     }
   });
 
-  map.forEach((quantity, material_id) => {
-    result.push({ material_id, quantity });
+  map.forEach(({ quantity, price }, material_id) => {
+    result.push({ material_id, quantity, price });
   });
 
   return result;
 }
-
 
 export default function MultipleChoice({ options, onChange }) {
   const [materialInput, setMaterialInput] = useState([]);
@@ -58,7 +55,7 @@ export default function MultipleChoice({ options, onChange }) {
       newMaterialInput[index].material_id = value;
       return newMaterialInput;
     });
-    
+
     setMaterialsToSend(arrUnique(materialInput));
 
     onChange(materialsToSend);
@@ -74,9 +71,8 @@ export default function MultipleChoice({ options, onChange }) {
 
     setMaterialsToSend(arrUnique(materialInput));
 
-    const materialToSave = {...materialInput[index]};
-    console.log(materialToSave)
-    materialToSave.quantity = materialInput.filter((material, i) => material.id === materialToSave.id && index !== i).reduce((acc, material) => acc + Number(material.quantity), Number(materialToSave.quantity));
+    const materialToSave = { ...materialInput[index] };
+    materialToSave.quantity = materialInput.filter((material, i) => material.material_id === materialToSave.material_id && index !== i).reduce((acc, material) => acc + Number(material.quantity), Number(materialToSave.quantity));
 
     onChange(materialsToSend);
   }
@@ -84,52 +80,55 @@ export default function MultipleChoice({ options, onChange }) {
   return (
     <div>
       {materialInput.map((Inpt, index) => (
-        <Grid container spacing={2} direction="row" key={index} sx={{mt:2}} >
+        <Grid container spacing={2} direction="row" key={index} sx={{ mt: 2 }} >
           <Item sx={8}>
-          <FormControl>
-            <InputLabel variant="standard" htmlFor="uncontrolled-native">
-              Material
-            </InputLabel>
-            <NativeSelect
-              index={index}
-              onChange={(e) => handleMaterialChange(e, index)}>
-              {options.map((material) => (
-                <option
-                  key={material.id}
-                  value={material.id}
-                  style={getStyles(material.name, options, theme)}
-                >
-                  {material.name}
-                </option>
-              ))}
-            </NativeSelect>
-          </FormControl>
-
+            <FormControl>
+              <InputLabel variant="standard" htmlFor="uncontrolled-native">
+                Material
+              </InputLabel>
+              <NativeSelect
+                index={index}
+                onChange={(e) => handleMaterialChange(e, index)}
+              >
+                {options.map((material) => (
+                  <option
+                    key={material.id}
+                    value={material.id}
+                    style={getStyles(material.name, options, theme)}
+                  >
+                    {material.name}
+                  </option>
+                ))}
+              </NativeSelect>
+            </FormControl>
           </Item>
           <Item sx={4}>
-          <TextField
-            label="Cantidad"
-            material_id={options.name}
-            name="Cantidad"
-            type="number"
-            InputProps={{
-              inputProps: {
-                min: 1, // Valor mínimo permitido
-                max: 100, // Valor máximo permitido
-              },
-            }}
-            value={Inpt.quantity}
-            onChange={(e) => handleQuantityChange(e, index)}
-          />
+            <TextField
+              label="Cantidad"
+              material_id={options.name}
+              name="Cantidad"
+              type="number"
+              InputProps={{
+                inputProps: {
+                  min: 1,
+                  max: 100, // Valor máximo permitido
+                },
+              }}
+              value={Inpt.quantity}
+              onChange={(e) => handleQuantityChange(e, index)}
+            />
           </Item>
-
         </Grid>
       ))}
       <Button
-        onClick={() => setMaterialInput((prevState) => [...prevState, {
-          material_id: options[0].id,
-          quantity: 1,
-        }])}
+        onClick={() => setMaterialInput((prevState) => [
+          {
+            material_id: options[0].id,
+            quantity: 1,
+            price: options[0].price,
+          },
+          ...prevState,
+        ])}
         color="success"
         variant="contained"
         sx={{ mt: 2 }}
