@@ -25,19 +25,19 @@ export default function OrderForm({ setBudget, productsToSend, setProductsToSend
       setProducts(response);
 
     });
-  }, []);
+  }, [setProducts]);
 
   useEffect(() => {
     getClientsList().then((response) => {
       setClients(response);
     });
-  }, []);
+  }, [setClients]);
 
   useEffect(() => {
     getBudgetList().then((response) => {
       setBudgetNumber(response.length + 1);
     });
-  }, []);
+  }, [setBudgetNumber]);
     
 
   const handleChange = (event) => {
