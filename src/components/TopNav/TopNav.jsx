@@ -8,15 +8,15 @@ import {
   Badge,
   Box,
   IconButton,
+  Link,
   Stack,
   SvgIcon,
   Tooltip,
 
 } from '@mui/material';
 import { useAuthContext } from '../../contexts/AuthContext';
-
-
-
+import { useEffect, useState } from 'react';
+import { getNotificationList } from '../../services/notificationsService';
 
 const SIDE_NAV_WIDTH = 280;
 const TOP_NAV_HEIGHT = 64;
@@ -24,9 +24,33 @@ const TOP_NAV_HEIGHT = 64;
 export const TopNav = (props) => {
   const { onNavOpen } = props;
 
+  const [notifications, setnotifications] = useState([]);
+
+  const filterNotifications = (notifications) => {
+    const filteredNotifications = notifications.filter((notification) => {
+        return notification.receiver === user.role;
+    });
+    return filteredNotifications;
+}
+
+//si hay notificaciones con status 'No leído' devuelve folse
+const hasUnreadNotifications = (notifications) => {
+  const unreadNotifications = notifications.filter((notification) => {
+      return notification.status === 'No leído';
+  });
+  return unreadNotifications.length > 0;
+}
+
+  useEffect(() => {
+    getNotificationList()
+    .then((response) => {
+      setnotifications(filterNotifications(response));
+    })
+  }, [])
+
 
   const {user} = useAuthContext();
-  console.log(user.avatar);
+
 
   return (
     <>
@@ -88,8 +112,25 @@ export const TopNav = (props) => {
                 </SvgIcon>
               </IconButton>
             </Tooltip>
+            <Link href="/notifications" sx={{color:"white"}}>
             <Tooltip title="Notifications">
               <IconButton>
+                {/* si hay notificaciones no leidas color danger */}
+                {
+                  hasUnreadNotifications(notifications) ? 
+                  <Badge
+                  badgeContent={4}
+                  color="error"
+                  variant="dot"
+                >
+                  <SvgIcon fontSize="small">
+
+                    <BellIcon />
+
+                  </SvgIcon>
+                </Badge>
+                :
+                //sino color success
                 <Badge
                   badgeContent={4}
                   color="success"
@@ -99,8 +140,10 @@ export const TopNav = (props) => {
                     <BellIcon />
                   </SvgIcon>
                 </Badge>
+                }
               </IconButton>
             </Tooltip>
+            </Link>
             <Avatar
               //onClick={}
               href={user.avatar}

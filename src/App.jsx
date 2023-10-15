@@ -23,6 +23,8 @@ import UserDetails from "./views/Users/UserDetails"
 
 import OTList from "./views/Production/OTList";
 import OTDetails from "./views/Production/OTDetails";
+import NotificationsList from "./views/Notifications/NotificationsList";
+import NotificationDetails from "./views/Notifications/NotificationsDetail";
 
 
 function App() {
@@ -67,6 +69,10 @@ function App() {
             {/* OT */}
             <Route path="/ot" element={<OTList />} />
             <Route path="/ot/:id" element={<OTDetails />} />
+
+            {/* Notifications routes*/}
+            <Route path="/notifications" element={<NotificationsList />} />
+            <Route path="/notification/:id" element={<NotificationDetails />} />
 
           </Route>
         </Routes>
