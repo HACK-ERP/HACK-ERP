@@ -5,8 +5,6 @@ import FirstPageIcon from '@mui/icons-material/FirstPage';
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { getOTList } from "../../services/OTService";
-import EditIcon from '@mui/icons-material/Edit';
-import DeleteIcon from '@mui/icons-material/Delete';
 import PropTypes from 'prop-types';
 import { getProductList } from "../../services/ProductsService";
 
@@ -31,6 +29,20 @@ function TablePaginationActions(props) {
         onPageChange(event, Math.max(0, Math.ceil(count / rowsPerPage) - 1));
     };
 
+
+    function changeDate(dateISO) {
+        const date = new Date(dateISO);
+        const day = date.getUTCDate();
+        const month = date.getUTCMonth() + 1;
+        const year = date.getUTCFullYear();
+    
+        const dayStr = day.toString().padStart(2, '0');
+        const monthStr = month.toString().padStart(2, '0');
+    
+        const newDate = `${dayStr}/${monthStr}/${year}`;
+    
+        return newDate;
+    }
 
     return (
         <Box sx={{ flexShrink: 0, ml: 2.5 }}>
@@ -135,9 +147,9 @@ export default function OTList() {
                     <TableHead>
                         <TableRow>
                             <TableCell align="center">OT</TableCell>
-                            <TableCell align="center">products</TableCell>
-                            <TableCell align="center">Status</TableCell>
-                            <TableCell align="center">Actions</TableCell>
+                            <TableCell align="center">Productos</TableCell>
+                            <TableCell align="center">Estado</TableCell>
+                            <TableCell align="center">Fecha de entrega</TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -156,20 +168,7 @@ export default function OTList() {
                                     {ot.status}
                                 </TableCell>
                                 <TableCell align="center">
-                                    <IconButton
-                                        aria-label="edit"
-                                        component={Link}
-                                        to={`/production/ot/edit/${ot.id}`}
-                                    >
-                                        <EditIcon />
-                                    </IconButton>
-                                    <IconButton
-                                        aria-label="delete"
-                                        component={Link}
-                                        to={`/production/ot/delete/${ot.id}`}
-                                    >
-                                        <DeleteIcon />
-                                    </IconButton>
+                                    {(ot.budget.deliveryDate)}
                                 </TableCell>
                             </TableRow>
                         ))}

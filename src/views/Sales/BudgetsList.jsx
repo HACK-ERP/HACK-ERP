@@ -78,7 +78,7 @@ function TablePaginationActions(props) {
     );
 }
 
-function chakgeDate(dateISO) {
+function changeDate(dateISO) {
     const date = new Date(dateISO);
     const day = date.getUTCDate();
     const month = date.getUTCMonth() + 1;
@@ -228,11 +228,9 @@ export default function BudgetList() {
                                         </Select>
                                     </FormControl>
                                 }
-
-
                                 </TableCell>
                                 <TableCell style={{ width: 160 }} align="right">
-                                    {chakgeDate(budget.deliveryDate)}
+                                    {changeDate(budget.deliveryDate)}
                                 </TableCell>
                             </TableRow>
                         ))}
