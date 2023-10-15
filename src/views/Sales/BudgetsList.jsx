@@ -141,6 +141,7 @@ export default function BudgetList() {
         setPage(0);
     };
 
+    
 
 
 
@@ -183,7 +184,12 @@ export default function BudgetList() {
                                     {budget.client.RS}
                                 </TableCell>
                                 <TableCell style={{ width: 160 }} align="right">
-                                    <FormControl fullWidth>
+                                    {budget.status === 'Aceptado' ?
+                                        <TableCell style={{ width: 160 }} align="right" sx={{ color: "green" }}>
+                                            {budget.status}
+                                        </TableCell>
+                                        :
+                                        <FormControl fullWidth>
                                         <InputLabel id="demo-simple-select-label">Estado</InputLabel>
                                         <Select
                                             labelId="demo-simple-select-label"
@@ -193,25 +199,26 @@ export default function BudgetList() {
                                             onChange={(event) => {
                                                 setSelectedStatus(event.target.value);
                                                 setSelectedBudgetId(budget.id);
+                                                setOT({budget: budget.id, code: budget.budgetNumber})
+                                                console.log(OT);
+                                               if(OT.budget !== ""&& OT.code !== ""){
                                                 statusUpdate(budget.id, { status: event.target.value })
                                                 .then(() => {
                                                     if(event.target.value === 'Aceptado'){
-                                                        setOT({
-                                                            "code": budget.budgetNumber,
-                                                            "budget": budget.id,
-                                                        });
-                                                        console.log(OT);
                                                         createOT(OT).then((response) => {
                                                             console.log(response);
                                                         }
                                                         ).catch((error) => console.log(error));
-
                                                     }
                                                 })
                                                 .catch((error) => console.log(error));
                                                 setBudget(prev => 
                                                     prev.map(b => b.id === budget.id ? { ...b, status: event.target.value } : b));
-                                            }}
+                                            } else {
+                                                alert("Debe seleccionar un estado");   
+                                            }
+                                        }
+                                            }
                                         >
                                             {statusList.map((status) => (
                                                 <MenuItem value={status} key={status}>
@@ -219,8 +226,9 @@ export default function BudgetList() {
                                                 </MenuItem>
                                             ))}
                                         </Select>
-
                                     </FormControl>
+                                }
+
 
                                 </TableCell>
                                 <TableCell style={{ width: 160 }} align="right">
