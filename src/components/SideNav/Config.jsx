@@ -64,6 +64,15 @@ export const items = [
     )
   },
   {
+    title: 'Proveedores',
+    href: '/users/create',
+    icon: (
+      <SvgIcon fontSize="small">
+        <UserPlusIcon />
+      </SvgIcon>
+    )
+  },
+  {
     title: 'Error',
     href: '/404',
     icon: (
