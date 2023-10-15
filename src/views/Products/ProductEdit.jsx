@@ -1,7 +1,10 @@
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { getProductDetail, updateProduct } from "../../services/ProductsService";
+import {
+  getProductDetail,
+  updateProduct,
+} from "../../services/ProductsService";
 import {
   Container,
   Typography,
@@ -31,14 +34,14 @@ const ProductEdit = () => {
 
   const handleUpdate = (event) => {
     event.preventDefault();
-    console.log("ENTRA HANDLE")
+    console.log("ENTRA HANDLE");
     updateProduct(id, product)
       .then(() => {
-        console.log("entra por aqui")
+        console.log("entra por aqui");
         navigate("/products");
       })
       .catch((error) => {
-        console.log("ENTRA AL CATCH")
+        console.log("ENTRA AL CATCH");
         console.log(error);
       });
   };
@@ -112,7 +115,7 @@ const ProductEdit = () => {
                   onChange={handleChange}
                 />
               </Box>
-              <Button  type="submit" variant="contained" color="primary">
+              <Button type="submit" variant="contained" color="primary">
                 Editar Producto
               </Button>
               <Link

@@ -104,7 +104,6 @@ export default function OTList() {
             setProducts(response);
         });
     }, [])
-
     
     const productsToShow = (ot) => {
         if (Array.isArray(ot) && ot.length > 0) {
