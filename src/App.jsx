@@ -27,6 +27,11 @@ import OTDetails from "./views/Production/OTDetails";
 import NotificationsList from "./views/Notifications/NotificationsList";
 import NotificationDetails from "./views/Notifications/NotificationsDetail";
 
+import SuppliersList from "./views/Suppliers/SuppliersList";
+import SupplierCreate from "./views/Suppliers/SupplierCreate";
+import SupplierDetails from "./views/Suppliers/SupplierDetails";
+import SupplierEdit from "./views/Suppliers/SupplierEdit";
+
 
 function App() {
   const { isAuthenticationFetched } = useAuthContext();
@@ -73,6 +78,12 @@ function App() {
             {/* Notifications routes*/}
             <Route path="/notifications" element={<NotificationsList />} />
             <Route path="/notification/:id" element={<NotificationDetails />} />
+
+            {/* Suppliers routes */}
+            <Route path="/suppliers" element={<SuppliersList />} />
+            <Route patt="/suppliers/:id" element={<SupplierDetails />} />
+            <Route path="/suppliers/create" element={<SupplierCreate />} />
+            <Route path="/suppliers/:id/edit" element={<SupplierEdit />} />
 
           </Route>
         </Routes>
