@@ -85,22 +85,34 @@ export default function OTList() {
         getOTList().then((response) => {
             setOtList(response);
         });
-    }
-        , []);
+    }, []);
 
     useEffect(() => {
         getProductList().then((response) => {
             setProducts(response);
         });
-    })
+    }, [])
 
-
+    
     const productsToShow = (ot) => {
-        const productsForOT = products.filter((product) => {
-            return ot.products.some((otProduct) => otProduct.product_id === product.id);
-        });
-        return productsForOT.map((product) => product.name).join(', ');
+        if (Array.isArray(ot) && ot.length > 0) {
+            const productNames = ot.map((otProduct) => {
+                const matchingProduct = products.find((product) => product.id === otProduct.product_id);
+                if (matchingProduct) {
+                    return matchingProduct.name;
+                }
+                return 'Producto no encontrado';
+            });
+
+            if (productNames.length > 0) {
+                return productNames.join(', ');
+            } else {
+                return 'La Orden de trabajo no registra productos';
+            }
+        }
+        return 'La Orden de trabajo no registra productos';
     };
+
 
     const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - otList.length) : 0;
 
@@ -138,7 +150,7 @@ export default function OTList() {
                                     {ot.code}
                                 </TableCell>
                                 <TableCell align="center">
-                                    {productsToShow(ot)}
+                                    {productsToShow(ot.budget.products)}
                                 </TableCell>
                                 <TableCell align="center">
                                     {ot.status}
