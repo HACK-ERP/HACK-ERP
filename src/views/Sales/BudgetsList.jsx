@@ -18,10 +18,10 @@ import { Button, Container, Link, TableHead, Typography } from '@mui/material';
 import { Link as RouterLink} from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getBudgetList, statusUpdate } from '../../services/BudgetService';
-import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
 import { createOT } from '../../services/OTService';
 
 function TablePaginationActions(props) {
@@ -111,12 +111,6 @@ export default function BudgetList() {
             "code": "",
             "budget": "",
         });
-
-
-
-
-
-
     const statusList = ['Enviado', 'Aceptado', 'Rechazado'];
 
 
@@ -140,10 +134,6 @@ export default function BudgetList() {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
-
-    
-
-
 
     return (
         <Container>
