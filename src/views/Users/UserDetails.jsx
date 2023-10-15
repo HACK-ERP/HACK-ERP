@@ -4,7 +4,6 @@ import {
   Typography,
   Card,
   CardContent,
-  CardMedia,
   Button,
   Container,
   Box,
