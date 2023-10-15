@@ -1,30 +1,52 @@
-import { useState } from "react";
-import { createUser } from "../../services/UsersService";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { updateUser } from "../../services/UsersService";
 import {
+  Container,
+  Typography,
   TextField,
   Button,
-  Typography,
-  Container,
+  Box,
   Grid,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
 } from "@mui/material";
+import { getUserDetail } from "../../services/UsersService";
 
-const UserForm = () => {
-  const [user, setUser] = useState({
-    avatar: "",
-    name: "",
-    surname: "",
-    phone: "",
-    email: "",
-    password: "",
-    role: "",
-  });
-
+const UserEdit = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
+  const [user, setUser] = useState({});
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    getUserDetail(id)
+      .then((user) => {
+        setUser(user);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+      });
+  }, [id]);
+
+  const handleUpdate = (event) => {
+    event.preventDefault();
+    console.log("ENTRA HANDLE");
+    updateUser(id, user)
+      .then(() => {
+        console.log("entra por aqui");
+        navigate("/users");
+      })
+      .catch((error) => {
+        console.log("ENTRA AL CATCH");
+        console.log(error);
+      });
+  };
 
   const handleChange = (event) => {
     const { name, value } = event.target;
@@ -36,32 +58,32 @@ const UserForm = () => {
     setUser({ ...user, role: value });
   };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    createUser(user)
-      .then((response) => {
-        console.log(response);
-        navigate("/users");
-      })
-      .catch((error) => console.log(error));
-  };
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (!user) {
+    return <p>User not found</p>;
+  }
+
+  const { name, phone, email, avatar } = user;
 
   return (
     <Container>
       <Grid container spacing={1}>
         <Grid item xs={12}>
           <Typography variant="h3" gutterBottom style={{ marginTop: "30px" }}>
-            Crear un empleado
+            Editar empleado
           </Typography>
         </Grid>
         <Grid item xs={12} sm={7}>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleUpdate}>
             <TextField
               label="Avatar"
               variant="outlined"
               fullWidth
               name="avatar"
-              value={user.avatar}
+              value={avatar}
               onChange={handleChange}
               margin="normal"
             />
@@ -70,16 +92,7 @@ const UserForm = () => {
               variant="outlined"
               fullWidth
               name="name"
-              value={user.name}
-              onChange={handleChange}
-              margin="normal"
-            />
-            <TextField
-              label="Apellidos"
-              variant="outlined"
-              fullWidth
-              name="surname"
-              value={user.surname}
+              value={name}
               onChange={handleChange}
               margin="normal"
             />
@@ -88,7 +101,7 @@ const UserForm = () => {
               variant="outlined"
               fullWidth
               name="phone"
-              value={user.phone}
+              value={phone}
               onChange={handleChange}
               margin="normal"
             />
@@ -97,11 +110,11 @@ const UserForm = () => {
               variant="outlined"
               fullWidth
               name="email"
-              value={user.email}
+              value={email}
               onChange={handleChange}
               margin="normal"
             />
-            <TextField
+            {/* <TextField
               label="Password"
               variant="outlined"
               fullWidth
@@ -109,7 +122,7 @@ const UserForm = () => {
               value={user.password}
               onChange={handleChange}
               margin="normal"
-            />
+            /> */}
             <FormControl fullWidth style={{ marginTop: "16px" }}>
               <InputLabel id="demo-simple-select-label">Rol</InputLabel>
               <Select
@@ -126,26 +139,23 @@ const UserForm = () => {
                 <MenuItem value={"ADMIN"}>ADMIN</MenuItem>
               </Select>
             </FormControl>
-            <Grid item xs={12}>
+            <Box>
               <Button
                 variant="contained"
-                color="primary"
                 type="submit"
-                style={{ marginTop: "16px", marginRight: "16px" }}
+                style={{ marginTop: "20px" }}
               >
-                Crear
+                Guardar cambios
               </Button>
-
-              <Link to="/users" style={{ textDecoration: "none" }}>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  style={{ marginTop: "16px" }}
-                >
-                  Volver a la lista de empleados
-                </Button>
-              </Link>
-            </Grid>
+              <Button
+                variant="contained"
+                component={Link}
+                to="/users"
+                style={{ marginTop: "20px", marginLeft: "20px" }}
+              >
+                Cancelar
+              </Button>
+            </Box>
           </form>
         </Grid>
       </Grid>
@@ -153,4 +163,4 @@ const UserForm = () => {
   );
 };
 
-export default UserForm;
+export default UserEdit;

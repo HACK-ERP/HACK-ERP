@@ -92,12 +92,12 @@ export default function OTList() {
         getProductList().then((response) => {
             setProducts(response);
         });
-    })
+    },[])
 
 
     const productsToShow = (ot) => {
         const productsForOT = products.filter((product) => {
-            return ot.products.some((otProduct) => otProduct.product_id === product.id);
+            return ot.products?.some((otProduct) => otProduct.product_id === product.id);
         });
         return productsForOT.map((product) => product.name).join(', ');
     };
