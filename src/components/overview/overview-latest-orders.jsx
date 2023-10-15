@@ -65,18 +65,19 @@ export const OverviewLatestOrders = (props) => {
       {/* </Scrollbar> */}
       <Divider />
       <CardActions sx={{ justifyContent: "flex-end" }}>
-        <Button
-          color="inherit"
-          endIcon={
-            <SvgIcon fontSize="small">
-              <ArrowRightIcon />
-            </SvgIcon>
-          }
-          size="small"
-          variant="text"
-        >
-          Ver Órdenes
-        </Button>
+        <Link to="/ot" style={{ textDecoration: "none", color: "inherit" }}>
+          <Button
+            color="inherit"
+            endIcon={
+              <SvgIcon fontSize="small">
+                <ArrowRightIcon />
+              </SvgIcon>
+            }
+            size="small"
+          >
+            Ver Órdenes
+          </Button>
+        </Link>
       </CardActions>
     </Card>
   );

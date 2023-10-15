@@ -26,7 +26,10 @@ import {
 } from "@mui/material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getUsersList, deleteUser } from "../../services/UsersService";
+import {
+  getSuppliersList,
+  deleteSupplier,
+} from "../../services/SuppliersService";
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -97,21 +100,21 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-export default function UserList() {
+export default function SupplierList() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [users, setUsers] = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
-    getUsersList().then((response) => {
+    getSuppliersList().then((response) => {
       console.log(response);
-      setUsers(response);
+      setSuppliers(response);
     });
   }, []);
 
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - users.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - suppliers.length) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -122,14 +125,16 @@ export default function UserList() {
     setPage(0);
   };
 
-  const handleUpdateUser = (id) => {
-    navigate(`/user/${id}/edit`);
+  const handleUpdateSupplier = (id) => {
+    navigate(`/suppliers/${id}/edit`);
   };
 
-  const handleDeleteUser = (id) => {
-    deleteUser(id)
+  const handleDeleteSupplier = (id) => {
+    deleteSupplier(id)
       .then(() => {
-        setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+        setSuppliers((prevSuppliers) =>
+          prevSuppliers.filter((suppliers) => suppliers.id !== id)
+        );
       })
       .catch((error) => console.log(error));
   };
@@ -137,77 +142,80 @@ export default function UserList() {
   return (
     <Container>
       <Typography variant="h3" gutterBottom style={{ marginTop: "20px" }}>
-        Personal
+        Proveedores
       </Typography>
       <Button
         component={RouterLink}
-        to="/users/create"
+        to="/suppliers/create"
         variant="contained"
         color="primary"
         sx={{ marginBottom: 3 }}
       >
-        Añadir Empleado
+        Añadir Proveedor
       </Button>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
           <TableHead>
             <TableRow>
-              <TableCell>Avatar</TableCell>
+              <TableCell>Logo</TableCell>
               <TableCell>Nombre</TableCell>
-              <TableCell>Teléfono</TableCell>
+              <TableCell>CIF</TableCell>
+              <TableCell align="center">Teléfono</TableCell>
               <TableCell align="center">Email</TableCell>
-              <TableCell align="center">Cargo</TableCell>
               <TableCell align="center">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {(rowsPerPage > 0
-              ? users.slice(
+              ? suppliers.slice(
                   page * rowsPerPage,
                   page * rowsPerPage + rowsPerPage
                 )
-              : users
-            ).map((user) => (
-              <TableRow key={user.id}>
+              : suppliers
+            ).map((supplier) => (
+              <TableRow key={supplier.id}>
                 <TableCell component="th" scope="row">
                   <Link
-                    href={`/user/${user.id}`}
+                    href={`/suppliers/${supplier.id}`}
                     color="inherit"
                     sx={{ textDecoration: "none" }}
                   >
-                    <Avatar alt={`Avatar de ${user.name}`} src={user.avatar} />
+                    <Avatar
+                      alt={`Avatar de ${supplier.name}`}
+                      src={supplier.logo}
+                    />
                   </Link>
                 </TableCell>
                 <TableCell component="th" scope="row">
                   <Link
-                    href={`/user/${user.id}`}
+                    href={`/suppliers/${supplier.id}`}
                     color="inherit"
                     sx={{ textDecoration: "none" }}
                   >
-                    {user.name}
+                    {supplier.name}
                   </Link>
                 </TableCell>
                 <TableCell component="th" scope="row">
-                  {user.phone}
+                  {supplier.cif}
                 </TableCell>
                 <TableCell style={{ width: 260 }} align="left">
-                  {user.email}
+                  {supplier.phone}
                 </TableCell>
                 <TableCell style={{ width: 200 }} align="center">
-                  {user.role}
+                  {supplier.email}
                 </TableCell>
                 <TableCell align="center">
                   <IconButton
                     aria-label="edit"
                     component={Link}
-                    onClick={() => handleUpdateUser(user.id)}
+                    onClick={() => handleUpdateSupplier(supplier.id)}
                   >
                     <EditIcon />
                   </IconButton>
                   <IconButton
                     aria-label="delete"
                     component={Link}
-                    onClick={() => handleDeleteUser(user.id)}
+                    onClick={() => handleDeleteSupplier(supplier.id)}
                   >
                     <DeleteIcon />
                   </IconButton>
@@ -225,7 +233,7 @@ export default function UserList() {
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
                 colSpan={4}
-                count={users.length}
+                count={suppliers.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 SelectProps={{
