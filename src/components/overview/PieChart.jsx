@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useEffect, useState } from "react";
 import {
   Chart,
   PieSeries,
@@ -6,35 +6,58 @@ import {
   Legend,
 } from "@devexpress/dx-react-chart-material-ui";
 import { Animation } from "@devexpress/dx-react-chart";
-import "../../assets/css/PieChart.css"
+import "../../assets/css/PieChart.css";
+import { getBudgetList } from "../../services/BudgetService";
 
 const data = [
-  { product: "Pendiente", area: 40 },
-  { product: "En Proceso", area: 20 },
-  { product: "Entregado", area: 30 },
+  { budget: "Enviado", area: 0 },
+  { budget: "Aceptado", area: 0 },
+  { budget: "Rechazado", area: 0 },
+  { budget: "Entregado", area: 0 }
 ];
 
-export default class PieChart extends React.PureComponent {
-  constructor(props) {
-    super(props);
+const PieChart = () => {
+  const [budgetList, setBudgetList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-    this.state = {
-      data,
-    };
+  useEffect(() => {
+    getBudgetList()
+      .then((response) => {
+        setBudgetList(response);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.error(error);
+        setLoading(false);
+      });
+  }, []);
+
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
-  render() {
-    const { data: chartData } = this.state;
+  budgetList.forEach((budget) => {
+    if (budget.status === "Enviado") {
+      data[0].area += 1;
+    } else if (budget.status === "Aceptado") {
+      data[1].area += 1;
+    } else if (budget.status === "Rechazado") {
+      data[2].area += 1;
+    } else if (budget.status === "Entregado") {
+      data[3].area += 1;
+    }
+  });
 
-    return (
-        <div className="pie-chart-container">
-        <Chart data={chartData}>
-          <PieSeries valueField="area" argumentField="product" />
-          <Title text="Estado de Producción" />
-          <Animation />
-          <Legend position="bottom" />
-        </Chart>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="pie-chart-container">
+      <Chart data={data}>
+        <PieSeries valueField="area" argumentField="budget" />
+        <Title text="Estado de Producción" />
+        <Animation />
+        <Legend position="bottom" />
+      </Chart>
+    </div>
+  );
+};
+
+export default PieChart;
