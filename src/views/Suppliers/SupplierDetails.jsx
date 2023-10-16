@@ -49,7 +49,7 @@ const SupplierDetails = () => {
           <Avatar
             alt="Remy Sharp"
             src={logo}
-            sx={{ width: 250, height: 250 }}
+            sx={{ width: 150, height: 150 }}
           />
           <CardContent>
             <Typography variant="h4" gutterBottom>

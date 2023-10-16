@@ -81,7 +81,7 @@ function App() {
 
             {/* Suppliers routes */}
             <Route path="/suppliers" element={<SuppliersList />} />
-            <Route patt="/suppliers/:id" element={<SupplierDetails />} />
+            <Route path="/suppliers/:id" element={<SupplierDetails />} />
             <Route path="/suppliers/create" element={<SupplierCreate />} />
             <Route path="/suppliers/:id/edit" element={<SupplierEdit />} />
 
