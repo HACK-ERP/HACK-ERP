@@ -18,6 +18,7 @@ import { Button, Container, Link, TableHead, Typography } from '@mui/material';
 import { Link as RouterLink } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getMaterialList } from '../../services/Materials';
+import SuppliersAlignItemsList from './SuppliersAlignItemsList';
 
 function TablePaginationActions(props) {
     const theme = useTheme();
@@ -85,12 +86,13 @@ export default function MaterialList() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [materials, setMaterials] = useState([]);
+    console.log(materials)
 
     useEffect(() => {
         getMaterialList()
-        .then(response => {
-            setMaterials(response)
-        })
+            .then(response => {
+                setMaterials(response)
+            })
     }, [])
 
     const emptyRows =
@@ -123,7 +125,8 @@ export default function MaterialList() {
                 <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
                     <TableHead>
                         <TableRow>
-                            <TableCell>Nombre</TableCell>
+                            <TableCell align="left">Nombre</TableCell>
+                            <TableCell align="center">Proveedores</TableCell>
                             <TableCell align="right">Stock</TableCell>
                             <TableCell align="right">Precio</TableCell>
                         </TableRow>
@@ -134,15 +137,18 @@ export default function MaterialList() {
                             : materials
                         ).map((material) => (
                             <TableRow key={material.id}>
-                                <TableCell component="th" scope="row">
-                                <Link href={`/materials/${material.id}`} color="inherit" sx={{textDecoration:"none"}}>
-                                    {material.name}
-                                </Link>
+                                <TableCell align="left" component="th" scope="row">
+                                    <Link href={`/materials/${material.id}`} color="inherit" sx={{ textDecoration: "none" }}>
+                                        {material.name}
+                                    </Link>
                                 </TableCell>
-                                <TableCell style={{ width: 160 }} align="right">
+                                <TableCell align="center" component="th" scope="row">
+                                    <SuppliersAlignItemsList suppliers={material.suppliers} />
+                                </TableCell>
+                                <TableCell align="right" style={{ width: 160 }} >
                                     {material.stock}
                                 </TableCell>
-                                <TableCell style={{ width: 160 }} align="right">
+                                <TableCell align="right" style={{ width: 160 }} >
                                     {material.price}
                                 </TableCell>
                             </TableRow>
