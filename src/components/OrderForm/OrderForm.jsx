@@ -17,8 +17,10 @@ export default function OrderForm({ setBudget, productsToSend, setProductsToSend
 
   const defaultSelectedClient = clients.find((client) => client.id === budget.client);
   const [selectedClient, setSelectedClient] = useState(defaultSelectedClient?.RS ? defaultSelectedClient.RS : "");
-  const [deliveryDate, setDeliveryDate] = useState("");
-  const [comments, setComments] = useState("");
+  const defaultDeliveryDate = budget.deliveryDate;
+  const [deliveryDate, setDeliveryDate] = useState(defaultDeliveryDate ? defaultDeliveryDate : "");
+  const defaultComments = budget.comments;
+  const [comments, setComments] = useState(defaultComments ? defaultComments : "");
 
   useEffect(() => {
     getProductList().then((response) => {
