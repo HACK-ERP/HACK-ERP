@@ -21,9 +21,10 @@ import FirstPageIcon from "@mui/icons-material/FirstPage";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { getOTList } from "../../services/OTService";
+import PropTypes from "prop-types";
 
 import { getProductList } from "../../services/ProductsService";
-import StatusCell from "./StatusCell";
+
 
 function TablePaginationActions(props) {
   const theme = useTheme();

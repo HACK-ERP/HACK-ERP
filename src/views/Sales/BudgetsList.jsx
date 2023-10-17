@@ -222,12 +222,7 @@ export default function BudgetList() {
                                 <TableCell style={{ width: 160 }} align="right">
                                     {changeDate(budget.deliveryDate)}
                                 </TableCell>
-                            </TableRow>
-                        ))}
-                      </Select>
-                    </FormControl>
-                  )}
-                </TableCell>
+
                 <TableCell style={{ width: 160 }} align="center">
                   {changeDate(budget.deliveryDate)}
                 </TableCell>
