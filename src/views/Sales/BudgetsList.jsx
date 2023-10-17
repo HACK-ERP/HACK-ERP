@@ -24,6 +24,7 @@ import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import { createOT } from '../../services/OTService';
 import { useAuthContext } from '../../contexts/AuthContext';
+
 function TablePaginationActions(props) {
     const theme = useTheme();
     const { count, page, rowsPerPage, onPageChange } = props;
@@ -104,7 +105,7 @@ export default function BudgetList() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [budget, setBudget] = useState([]);
-    const { currentUser } = useAuthContext();
+    const {user} = useAuthContext();
 
     const statusList = ['Enviado', 'Aceptado', 'Rechazado'];
 
@@ -116,8 +117,7 @@ export default function BudgetList() {
             })
     }, [])
 
-
-
+    
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - budget.length) : 0;
 
@@ -184,18 +184,19 @@ export default function BudgetList() {
                                                 onChange={(event) => {
                                                     statusUpdate(budget.id, { status: event.target.value })
                                                         .then(() => {
-                                                            if (event.target.value === 'Aceptado') {
-                                                                createOT({ budget: budget.id, code: budget.budgetNumber }, currentUser.id).then((response) => {
-                                                                    console.log(response);
-                                                                }
-                                                                ).catch((error) => console.log(error));
-                                                            }
+                                                            
+                                                            createOT({ budget: budget.id, code: budget.budgetNumber, userId: user.id }).then((response) => {
+                                                                console.log(
+                                                                    "budget: " + budget.id,
+                                                                    "code: " + budget.budgetNumber,
+                                                                    "userId: " + user.id
+                                                                )
+                                                                console.log(response);
+                                                            }).catch((error) => console.log(error));
                                                         })
                                                         .catch((error) => console.log(error));
-                                                    setBudget(prev =>
-                                                        prev.map(b => b.id === budget.id ? { ...b, status: event.target.value } : b));
-                                                }
-                                                }
+                                                    setBudget(prev => prev.map(b => b.id === budget.id ? { ...b, status: event.target.value } : b));
+                                                }}
                                             >
                                                 {statusList.map((status) => (
                                                     <MenuItem value={status} key={status}>

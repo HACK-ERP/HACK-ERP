@@ -50,6 +50,7 @@ const hasUnreadNotifications = (notifications) => {
 
 
   const {user} = useAuthContext();
+  
 
 
   return (
