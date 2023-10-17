@@ -42,8 +42,10 @@ export const TopNav = (props) => {
   useEffect(() => {
     getNotificationList().then((response) => {
       setnotifications(filterNotifications(response));
-    });
-  }, []);
+
+    })
+  }, [])
+
 
   const { user } = useAuthContext();
 

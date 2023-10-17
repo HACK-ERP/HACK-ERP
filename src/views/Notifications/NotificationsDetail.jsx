@@ -28,8 +28,6 @@ const NotificationDetails = () => {
         setLoading(false);
       });
   }, [id]);
-
-
   if (loading) {
     return <Typography>Loading...</Typography>;
   }
@@ -37,9 +35,6 @@ const NotificationDetails = () => {
   if (!notification) {
     return <Typography>Notificación no encontrada</Typography>;
   }
-
-
-
   return (
     <Container>
 
@@ -49,6 +44,7 @@ const NotificationDetails = () => {
           <Grid mt={4} container spacing={2} alignItems={'center'} justifyContent={'center'} >
             <Grid item xs={3} ml alignItems={'center'} justifyContent={'center'}>
               <Avatar
+              sx={ {width: 150, height: 150} }
                 alt={notification.sender?.name}
                 src={notification.sender?.avatar}
               />

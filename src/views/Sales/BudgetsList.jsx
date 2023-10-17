@@ -1,28 +1,31 @@
-import PropTypes from "prop-types";
-import { useTheme } from "@mui/material/styles";
-import Box from "@mui/material/Box";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableFooter from "@mui/material/TableFooter";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import IconButton from "@mui/material/IconButton";
-import FirstPageIcon from "@mui/icons-material/FirstPage";
-import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
-import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
-import LastPageIcon from "@mui/icons-material/LastPage";
-import { Button, Container, Link, TableHead, Typography } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { getBudgetList, statusUpdate } from "../../services/BudgetService";
-import MenuItem from "@mui/material/MenuItem";
-import FormControl from "@mui/material/FormControl";
-import Select from "@mui/material/Select";
-import InputLabel from "@mui/material/InputLabel";
-import { createOT } from "../../services/OTService";
+
+import PropTypes from 'prop-types';
+import { useTheme } from '@mui/material/styles';
+import Box from '@mui/material/Box';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableFooter from '@mui/material/TableFooter';
+import TablePagination from '@mui/material/TablePagination';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import IconButton from '@mui/material/IconButton';
+import FirstPageIcon from '@mui/icons-material/FirstPage';
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import LastPageIcon from '@mui/icons-material/LastPage';
+import { Button, Container, Link, TableHead, Typography } from '@mui/material';
+import { Link as RouterLink } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import { getBudgetList, statusUpdate } from '../../services/BudgetService';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
+import InputLabel from '@mui/material/InputLabel';
+import { createOT } from '../../services/OTService';
+import { useAuthContext } from '../../contexts/AuthContext';
+
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -108,26 +111,26 @@ TablePaginationActions.propTypes = {
 };
 
 export default function BudgetList() {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [budget, setBudget] = useState([]);
-  const [, setSelectedStatus] = useState("");
-  const [, setSelectedBudgetId] = useState(null);
 
-  const [OT, setOT] = useState({
-    code: "",
-    budget: "",
-  });
-  const statusList = ["Enviado", "Aceptado", "Rechazado"];
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
+    const [budget, setBudget] = useState([]);
+    const {user} = useAuthContext();
 
-  useEffect(() => {
-    getBudgetList().then((response) => {
-      setBudget(response);
-    });
-  }, []);
+    const statusList = ['Enviado', 'Aceptado', 'Rechazado'];
 
-  const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - budget.length) : 0;
+
+    useEffect(() => {
+        getBudgetList()
+            .then(response => {
+                setBudget(response)
+            })
+    }, [])
+
+    
+    const emptyRows =
+        page > 0 ? Math.max(0, (1 + page) * rowsPerPage - budget.length) : 0;
+
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -138,108 +141,88 @@ export default function BudgetList() {
     setPage(0);
   };
 
-  return (
-    <Container>
-      <Typography variant="h3" gutterBottom style={{ marginTop: "20px" }}>
-        Presupuestos
-      </Typography>
-      <Button
-        component={RouterLink}
-        to="/budget/create"
-        variant="contained"
-        color="primary"
-        sx={{ marginBottom: 3 }}
-      >
-        Crear Presupuesto
-      </Button>
-      <TableContainer component={Paper}>
-        <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
-          <TableHead>
-            <TableRow>
-              <TableCell>Nº</TableCell>
-              <TableCell align="center">Cliente</TableCell>
-              <TableCell align="center">Estado</TableCell>
-              <TableCell align="right">Fecha de entrega</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {(rowsPerPage > 0
-              ? budget.slice(
-                  page * rowsPerPage,
-                  page * rowsPerPage + rowsPerPage
-                )
-              : budget
-            ).map((budget) => (
-              <TableRow key={budget.id}>
-                <TableCell component="th" scope="row">
-                  <Link
-                    href={`/budget/${budget.id}`}
-                    color="inherit"
-                    sx={{ textDecoration: "none" }}
-                  >
-                    {budget.budgetNumber}
-                  </Link>
-                </TableCell>
-                <TableCell style={{ width: 160 }} align="right">
-                  {budget.client.RS}
-                </TableCell>
-                <TableCell style={{ width: 160 }} align="right">
-                  {budget.status === "Aceptado" ? (
-                    <TableCell
-                      style={{ width: 160 }}
-                      align="right"
-                      sx={{ color: "green" }}
-                    >
-                      {budget.status}
-                    </TableCell>
-                  ) : (
-                    <FormControl fullWidth>
-                      <InputLabel id="demo-simple-select-label">
-                        Estado
-                      </InputLabel>
-                      <Select
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
-                        value={budget.status}
-                        label="Estado"
-                        onChange={(event) => {
-                          setSelectedStatus(event.target.value);
-                          setSelectedBudgetId(budget.id);
-                          setOT({
-                            budget: budget.id,
-                            code: budget.budgetNumber,
-                          });
-                          console.log(OT);
-                          if (OT.budget !== "" && OT.code !== "") {
-                            statusUpdate(budget.id, {
-                              status: event.target.value,
-                            })
-                              .then(() => {
-                                if (event.target.value === "Aceptado") {
-                                  createOT(OT)
-                                    .then((response) => {
-                                      console.log(response);
-                                    })
-                                    .catch((error) => console.log(error));
-                                }
-                              })
-                              .catch((error) => console.log(error));
-                            setBudget((prev) =>
-                              prev.map((b) =>
-                                b.id === budget.id
-                                  ? { ...b, status: event.target.value }
-                                  : b
-                              )
-                            );
-                          } else {
-                            alert("Debe seleccionar un estado");
-                          }
-                        }}
-                      >
-                        {statusList.map((status) => (
-                          <MenuItem value={status} key={status}>
-                            {status}
-                          </MenuItem>
+
+    return (
+        <Container>
+            <Typography variant="h3" gutterBottom style={{ marginTop: "20px" }}>
+                Presupuestos
+            </Typography>
+            <Button
+                component={RouterLink}
+                to="/budget/create"
+                variant="contained"
+                color="primary"
+                sx={{ marginBottom: 3 }}
+            >
+                Crear Presupuesto
+            </Button>
+            <TableContainer component={Paper}>
+                <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Nº</TableCell>
+                            <TableCell align="right">Cliente</TableCell>
+                            <TableCell align="right">Estado</TableCell>
+                            <TableCell align="right">Fecha de entrega</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {(rowsPerPage > 0
+                            ? budget.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            : budget
+                        ).map((budget) => (
+                            <TableRow key={budget.id}>
+                                <TableCell component="th" scope="row">
+                                    <Link href={`/budget/${budget.id}`} color="inherit" sx={{ textDecoration: "none" }}>
+                                        {budget.budgetNumber}
+                                    </Link>
+                                </TableCell>
+                                <TableCell style={{ width: 160 }} align="right">
+                                    {budget.client.RS}
+                                </TableCell>
+                                <TableCell style={{ width: 160 }} align="right">
+                                    {budget.status === 'Aceptado' ?
+                                        <TableCell style={{ width: 160 }} align="right" sx={{ color: "green" }}>
+                                            {budget.status}
+                                        </TableCell>
+                                        :
+                                        <FormControl fullWidth>
+                                            <InputLabel id="demo-simple-select-label">Estado</InputLabel>
+                                            <Select
+                                                labelId="demo-simple-select-label"
+                                                id="demo-simple-select"
+                                                value={budget.status}
+                                                label="Estado"
+                                                onChange={(event) => {
+                                                    statusUpdate(budget.id, { status: event.target.value })
+                                                        .then(() => {
+                                                            
+                                                            createOT({ budget: budget.id, code: budget.budgetNumber, userId: user.id }).then((response) => {
+                                                                console.log(
+                                                                    "budget: " + budget.id,
+                                                                    "code: " + budget.budgetNumber,
+                                                                    "userId: " + user.id
+                                                                )
+                                                                console.log(response);
+                                                            }).catch((error) => console.log(error));
+                                                        })
+                                                        .catch((error) => console.log(error));
+                                                    setBudget(prev => prev.map(b => b.id === budget.id ? { ...b, status: event.target.value } : b));
+                                                }}
+                                            >
+                                                {statusList.map((status) => (
+                                                    <MenuItem value={status} key={status}>
+                                                        {status}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    }
+                                </TableCell>
+                                <TableCell style={{ width: 160 }} align="right">
+                                    {changeDate(budget.deliveryDate)}
+                                </TableCell>
+                            </TableRow>
                         ))}
                       </Select>
                     </FormControl>

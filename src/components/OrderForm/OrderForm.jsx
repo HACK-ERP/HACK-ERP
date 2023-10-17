@@ -42,7 +42,6 @@ export default function OrderForm({ setBudget, productsToSend, setProductsToSend
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    console.log(event.target);
     if (name === "client") {
       const clientSelected = clients.find((client) => client.RS === value);
       setSelectedClient(value);
