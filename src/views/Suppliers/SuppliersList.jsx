@@ -198,7 +198,7 @@ export default function SupplierList() {
                 <TableCell component="th" scope="row">
                   {supplier.cif}
                 </TableCell>
-                <TableCell style={{ width: 260 }} align="left">
+                <TableCell style={{ width: 260 }} align="center">
                   {supplier.phone}
                 </TableCell>
                 <TableCell style={{ width: 200 }} align="center">
