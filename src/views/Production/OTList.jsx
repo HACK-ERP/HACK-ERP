@@ -1,12 +1,13 @@
-import { Box, Container, IconButton, Link, Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, Typography } from "@mui/material";
+import { Box, Container, FormControl, IconButton, InputLabel, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TablePagination, TableRow, Typography } from "@mui/material";
 import { useTheme } from '@mui/material/styles';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import FirstPageIcon from '@mui/icons-material/FirstPage';
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { useEffect, useState } from "react";
-import { getOTList } from "../../services/OTService";
+import { getOTList, updateOT } from "../../services/OTService";
 import PropTypes from 'prop-types';
 import { getProductList } from "../../services/ProductsService";
+import StatusCell from "./StatusCell";
 
 
 function TablePaginationActions(props) {
@@ -30,19 +31,7 @@ function TablePaginationActions(props) {
     };
 
 
-    function changeDate(dateISO) {
-        const date = new Date(dateISO);
-        const day = date.getUTCDate();
-        const month = date.getUTCMonth() + 1;
-        const year = date.getUTCFullYear();
-    
-        const dayStr = day.toString().padStart(2, '0');
-        const monthStr = month.toString().padStart(2, '0');
-    
-        const newDate = `${dayStr}/${monthStr}/${year}`;
-    
-        return newDate;
-    }
+
 
     return (
         <Box sx={{ flexShrink: 0, ml: 2.5 }}>
@@ -86,12 +75,31 @@ TablePaginationActions.propTypes = {
     rowsPerPage: PropTypes.number.isRequired,
 }
 
+function changeDate(dateISO) {
+    const date = new Date(dateISO);
+    const day = date.getUTCDate();
+    const month = date.getUTCMonth() + 1;
+    const year = date.getUTCFullYear();
+
+    const dayStr = day.toString().padStart(2, '0');
+    const monthStr = month.toString().padStart(2, '0');
+
+    const newDate = `${dayStr}/${monthStr}/${year}`;
+
+    return newDate;
+}
+
 export default function OTList() {
+
+
+
 
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [otList, setOtList] = useState([]);
     const [products, setProducts] = useState([]);
+    const [selectedStatus, setSelectedStatus] = useState('')
+    const [updatedStatus, setUpdatedStatus] = useState('');
 
     useEffect(() => {
         getOTList().then((response) => {
@@ -105,7 +113,7 @@ export default function OTList() {
         });
     }, [])
 
-    
+
     const productsToShow = (ot) => {
         if (Array.isArray(ot) && ot.length > 0) {
             const productNames = ot.map((otProduct) => {
@@ -132,10 +140,43 @@ export default function OTList() {
         setPage(newPage);
     }
 
+    const handleChangeStatus = (event) => {
+        setSelectedStatus(event.target.value); // Maneja el cambio del valor seleccionado
+    }
+
     const handleChangeRowsPerPage = (event) => {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     }
+
+/*     const handleStatusChange = (otId, newStatus) => {
+        
+        
+        const updatedOTList = otList.map((ot) => {
+            if (ot.id === otId) {
+                return { ...ot, status: newStatus };
+            }
+            return ot;
+        });
+        
+        Actualiza el estado con la nueva lista de OTs
+        setOTList(updatedOTList);
+        
+        Luego, puedes enviar la actualización al servidor si es necesario
+        mediante una llamada a tu API, dependiendo de tu configuración.
+        
+        Por ejemplo:
+        
+        updateOTStatus(otId, newStatus)
+          .then((response) => {
+            // Maneja la respuesta exitosa si es necesario
+          })
+          .catch((error) => {
+            // Maneja el error si es necesario
+          });
+    }; */
+
+
 
     return (
         <Container>
@@ -164,11 +205,9 @@ export default function OTList() {
                                 <TableCell align="center">
                                     {productsToShow(ot.budget.products)}
                                 </TableCell>
+                                <StatusCell status={ot.status} onChange={(newStatus) => handleStatusChange(ot.id, newStatus)} />
                                 <TableCell align="center">
-                                    {ot.status}
-                                </TableCell>
-                                <TableCell align="center">
-                                    {(ot.budget.deliveryDate)}
+                                    {changeDate(ot.budget.deliveryDate)}
                                 </TableCell>
                             </TableRow>
                         ))}
@@ -177,7 +216,6 @@ export default function OTList() {
                                 <TableCell colSpan={6} />
                             </TableRow>
                         )}
-
                     </TableBody>
                     <TableFooter>
                         <TableRow>

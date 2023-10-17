@@ -15,7 +15,7 @@ import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import LastPageIcon from '@mui/icons-material/LastPage';
 import { Button, Container, Link, TableHead, Typography } from '@mui/material';
-import { Link as RouterLink} from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import { getBudgetList, statusUpdate } from '../../services/BudgetService';
 import MenuItem from '@mui/material/MenuItem';
@@ -23,7 +23,7 @@ import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import InputLabel from '@mui/material/InputLabel';
 import { createOT } from '../../services/OTService';
-
+import { useAuthContext } from '../../contexts/AuthContext';
 function TablePaginationActions(props) {
     const theme = useTheme();
     const { count, page, rowsPerPage, onPageChange } = props;
@@ -104,13 +104,8 @@ export default function BudgetList() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [budget, setBudget] = useState([]);
-    const [, setSelectedStatus] = useState('');
-    const [, setSelectedBudgetId] = useState(null);
+    const { currentUser } = useAuthContext();
 
-    const [OT , setOT] = useState({
-            "code": "",
-            "budget": "",
-        });
     const statusList = ['Enviado', 'Aceptado', 'Rechazado'];
 
 
@@ -180,44 +175,36 @@ export default function BudgetList() {
                                         </TableCell>
                                         :
                                         <FormControl fullWidth>
-                                        <InputLabel id="demo-simple-select-label">Estado</InputLabel>
-                                        <Select
-                                            labelId="demo-simple-select-label"
-                                            id="demo-simple-select"
-                                            value={budget.status}
-                                            label="Estado"
-                                            onChange={(event) => {
-                                                setSelectedStatus(event.target.value);
-                                                setSelectedBudgetId(budget.id);
-                                                setOT({budget: budget.id, code: budget.budgetNumber})
-                                                console.log(OT);
-                                               if(OT.budget !== ""&& OT.code !== ""){
-                                                statusUpdate(budget.id, { status: event.target.value })
-                                                .then(() => {
-                                                    if(event.target.value === 'Aceptado'){
-                                                        createOT(OT).then((response) => {
-                                                            console.log(response);
-                                                        }
-                                                        ).catch((error) => console.log(error));
-                                                    }
-                                                })
-                                                .catch((error) => console.log(error));
-                                                setBudget(prev => 
-                                                    prev.map(b => b.id === budget.id ? { ...b, status: event.target.value } : b));
-                                            } else {
-                                                alert("Debe seleccionar un estado");   
-                                            }
-                                        }
-                                            }
-                                        >
-                                            {statusList.map((status) => (
-                                                <MenuItem value={status} key={status}>
-                                                    {status}
-                                                </MenuItem>
-                                            ))}
-                                        </Select>
-                                    </FormControl>
-                                }
+                                            <InputLabel id="demo-simple-select-label">Estado</InputLabel>
+                                            <Select
+                                                labelId="demo-simple-select-label"
+                                                id="demo-simple-select"
+                                                value={budget.status}
+                                                label="Estado"
+                                                onChange={(event) => {
+                                                    statusUpdate(budget.id, { status: event.target.value })
+                                                        .then(() => {
+                                                            if (event.target.value === 'Aceptado') {
+                                                                createOT({ budget: budget.id, code: budget.budgetNumber }, currentUser.id).then((response) => {
+                                                                    console.log(response);
+                                                                }
+                                                                ).catch((error) => console.log(error));
+                                                            }
+                                                        })
+                                                        .catch((error) => console.log(error));
+                                                    setBudget(prev =>
+                                                        prev.map(b => b.id === budget.id ? { ...b, status: event.target.value } : b));
+                                                }
+                                                }
+                                            >
+                                                {statusList.map((status) => (
+                                                    <MenuItem value={status} key={status}>
+                                                        {status}
+                                                    </MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    }
                                 </TableCell>
                                 <TableCell style={{ width: 160 }} align="right">
                                     {changeDate(budget.deliveryDate)}

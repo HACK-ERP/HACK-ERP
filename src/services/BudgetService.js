@@ -6,7 +6,7 @@ export const getBudgetList = () => http.get('/hackerp/budget/list?sortBy=created
 
 export const getBudgetDetail = (id) => http.get(`/hackerp/budget/${id}`);
 
-export const createBudget = (product) => http.post('/hackerp/budget/create', product);
+export const createBudget = (product, userId) => http.post('/hackerp/budget/create', product, userId);
 
 export const updateBudget = (id, product) => http.put(`/hackerp/budget/${id}`, product);
 
