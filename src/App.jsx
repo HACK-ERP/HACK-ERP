@@ -19,12 +19,18 @@ import BudgetForm from "./views/Sales/BudgetForm";
 
 import UserList from "./views/Users/UsersList";
 import UserCreate from "./views/Users/UserCreate";
-import UserDetails from "./views/Users/UserDetails"
+import UserDetails from "./views/Users/UserDetails";
+import UserEdit from "./views/Users/UserEdit";
 
 import OTList from "./views/Production/OTList";
 import OTDetails from "./views/Production/OTDetails";
 import NotificationsList from "./views/Notifications/NotificationsList";
 import NotificationDetails from "./views/Notifications/NotificationsDetail";
+
+import SuppliersList from "./views/Suppliers/SuppliersList";
+import SupplierCreate from "./views/Suppliers/SupplierCreate";
+import SupplierDetails from "./views/Suppliers/SupplierDetails";
+import SupplierEdit from "./views/Suppliers/SupplierEdit";
 
 
 function App() {
@@ -61,11 +67,10 @@ function App() {
             {/* Users routes */}
 
             <Route path="/users" element={<UserList />} />
-            <Route path="/users/create" element={<UserCreate />} />
-
             <Route path="/user/:id" element={<UserDetails />} />
-
-            {/* <Route path="/user/:id" element={<UserDetails />} /> */}
+            <Route path="/users/create" element={<UserCreate />} />
+            <Route path="/user/:id/edit" element={<UserEdit />} />
+            
             {/* OT */}
             <Route path="/ot" element={<OTList />} />
             <Route path="/ot/:id" element={<OTDetails />} />
@@ -73,6 +78,12 @@ function App() {
             {/* Notifications routes*/}
             <Route path="/notifications" element={<NotificationsList />} />
             <Route path="/notification/:id" element={<NotificationDetails />} />
+
+            {/* Suppliers routes */}
+            <Route path="/suppliers" element={<SuppliersList />} />
+            <Route path="/suppliers/:id" element={<SupplierDetails />} />
+            <Route path="/suppliers/create" element={<SupplierCreate />} />
+            <Route path="/suppliers/:id/edit" element={<SupplierEdit />} />
 
           </Route>
         </Routes>

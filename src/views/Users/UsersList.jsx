@@ -9,15 +9,24 @@ import TableFooter from "@mui/material/TableFooter";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import IconButton from "@mui/material/IconButton";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
 import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
 import LastPageIcon from "@mui/icons-material/LastPage";
-import { Avatar, Button, Container, Link, TableHead, Typography } from "@mui/material";
-import { Link as RouterLink } from "react-router-dom";
+import {
+  Avatar,
+  Button,
+  Container,
+  Link,
+  TableHead,
+  Typography,
+} from "@mui/material";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getUsersList } from "../../services/UsersService";
+import { getUsersList, deleteUser } from "../../services/UsersService";
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -92,6 +101,7 @@ export default function UserList() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [users, setUsers] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getUsersList().then((response) => {
@@ -110,6 +120,18 @@ export default function UserList() {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
+  };
+
+  const handleUpdateUser = (id) => {
+    navigate(`/user/${id}/edit`);
+  };
+
+  const handleDeleteUser = (id) => {
+    deleteUser(id)
+      .then(() => {
+        setUsers((prevUsers) => prevUsers.filter((user) => user.id !== id));
+      })
+      .catch((error) => console.log(error));
   };
 
   return (
@@ -135,6 +157,7 @@ export default function UserList() {
               <TableCell>Teléfono</TableCell>
               <TableCell align="center">Email</TableCell>
               <TableCell align="center">Cargo</TableCell>
+              <TableCell align="center">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -172,6 +195,22 @@ export default function UserList() {
                 </TableCell>
                 <TableCell style={{ width: 200 }} align="center">
                   {user.role}
+                </TableCell>
+                <TableCell align="center">
+                  <IconButton
+                    aria-label="edit"
+                    component={Link}
+                    onClick={() => handleUpdateUser(user.id)}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton
+                    aria-label="delete"
+                    component={Link}
+                    onClick={() => handleDeleteUser(user.id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}

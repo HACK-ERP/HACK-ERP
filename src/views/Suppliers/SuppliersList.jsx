@@ -1,29 +1,35 @@
-
+import PropTypes from "prop-types";
+import { useTheme } from "@mui/material/styles";
+import Box from "@mui/material/Box";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableFooter from "@mui/material/TableFooter";
+import TablePagination from "@mui/material/TablePagination";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import IconButton from "@mui/material/IconButton";
+import FirstPageIcon from "@mui/icons-material/FirstPage";
+import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
+import KeyboardArrowRight from "@mui/icons-material/KeyboardArrowRight";
+import LastPageIcon from "@mui/icons-material/LastPage";
 import {
-  Box,
+  Avatar,
+  Button,
   Container,
-  IconButton,
   Link,
-  Paper,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableFooter,
   TableHead,
-  TablePagination,
-  TableRow,
   Typography,
 } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
-import LastPageIcon from "@mui/icons-material/LastPage";
-import FirstPageIcon from "@mui/icons-material/FirstPage";
-import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { getOTList } from "../../services/OTService";
-
-import { getProductList } from "../../services/ProductsService";
-import StatusCell from "./StatusCell";
+import {
+  getSuppliersList,
+  deleteSupplier,
+} from "../../services/SuppliersService";
 
 function TablePaginationActions(props) {
   const theme = useTheme();
@@ -87,22 +93,6 @@ function TablePaginationActions(props) {
   );
 }
 
-function changeDate(dateISO) {
-  const date = new Date(dateISO);
-  const day = date.getUTCDate();
-  const month = date.getUTCMonth() + 1;
-  const year = date.getUTCFullYear();
-
-
-  const dayStr = day.toString().padStart(2, "0");
-  const monthStr = month.toString().padStart(2, "0");
-
-
-  const newDate = `${dayStr}/${monthStr}/${year}`;
-
-  return newDate;
-}
-
 TablePaginationActions.propTypes = {
   count: PropTypes.number.isRequired,
   onPageChange: PropTypes.func.isRequired,
@@ -110,47 +100,21 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-export default function OTList() {
+export default function SupplierList() {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
-  const [otList, setOtList] = useState([]);
-  const [products, setProducts] = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
-    getOTList().then((response) => {
-      setOtList(response);
+    getSuppliersList().then((response) => {
+      console.log(response);
+      setSuppliers(response);
     });
   }, []);
-
-  useEffect(() => {
-    getProductList().then((response) => {
-      setProducts(response);
-    });
-  }, []);
-
-  const productsToShow = (ot) => {
-    if (Array.isArray(ot) && ot.length > 0) {
-      const productNames = ot.map((otProduct) => {
-        const matchingProduct = products.find(
-          (product) => product.id === otProduct.product_id
-        );
-        if (matchingProduct) {
-          return matchingProduct.name;
-        }
-        return "Producto no encontrado";
-      });
-
-      if (productNames.length > 0) {
-        return productNames.join(", ");
-      } else {
-        return "La Orden de trabajo no registra productos";
-      }
-    }
-    return "La Orden de trabajo no registra productos";
-  };
 
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - otList.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - suppliers.length) : 0;
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -161,51 +125,106 @@ export default function OTList() {
     setPage(0);
   };
 
+  const handleUpdateSupplier = (id) => {
+    navigate(`/suppliers/${id}/edit`);
+  };
+
+  const handleDeleteSupplier = (id) => {
+    deleteSupplier(id)
+      .then(() => {
+        setSuppliers((prevSuppliers) =>
+          prevSuppliers.filter((suppliers) => suppliers.id !== id)
+        );
+      })
+      .catch((error) => console.log(error));
+  };
+
   return (
     <Container>
       <Typography variant="h3" gutterBottom style={{ marginTop: "20px" }}>
-        Órdenes de trabajo
+        Proveedores
       </Typography>
+      <Button
+        component={RouterLink}
+        to="/suppliers/create"
+        variant="contained"
+        color="primary"
+        sx={{ marginBottom: 3 }}
+      >
+        Añadir Proveedor
+      </Button>
       <TableContainer component={Paper}>
         <Table sx={{ minWidth: 500 }} aria-label="custom pagination table">
           <TableHead>
             <TableRow>
-              <TableCell align="center">OT</TableCell>
-              <TableCell align="left">Productos</TableCell>
-              <TableCell align="center">Estado</TableCell>
-              <TableCell align="center">Fecha de entrega</TableCell>
+              <TableCell>Logo</TableCell>
+              <TableCell>Nombre</TableCell>
+              <TableCell>CIF</TableCell>
+              <TableCell align="center">Teléfono</TableCell>
+              <TableCell align="center">Email</TableCell>
+              <TableCell align="center">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {(rowsPerPage > 0
-              ? otList.slice(
+              ? suppliers.slice(
                   page * rowsPerPage,
                   page * rowsPerPage + rowsPerPage
                 )
-              : otList
-            ).map((ot) => (
-              <TableRow key={ot.id}>
-                <TableCell align="center">
+              : suppliers
+            ).map((supplier) => (
+              <TableRow key={supplier.id}>
+                <TableCell component="th" scope="row">
                   <Link
-                    href={`/ot/${ot.id}`}
+                    href={`/suppliers/${supplier.id}`}
                     color="inherit"
                     sx={{ textDecoration: "none" }}
                   >
-                    {ot.code}
+                    <Avatar
+                      alt={`Avatar de ${supplier.name}`}
+                      src={supplier.logo}
+                    />
                   </Link>
                 </TableCell>
-                <TableCell align="left">
-                  {productsToShow(ot.budget.products)}
+                <TableCell component="th" scope="row">
+                  <Link
+                    href={`/suppliers/${supplier.id}`}
+                    color="inherit"
+                    sx={{ textDecoration: "none" }}
+                  >
+                    {supplier.name}
+                  </Link>
                 </TableCell>
-                <TableCell align="center">{ot.status}</TableCell>
+                <TableCell component="th" scope="row">
+                  {supplier.cif}
+                </TableCell>
+                <TableCell style={{ width: 260 }} align="center">
+                  {supplier.phone}
+                </TableCell>
+                <TableCell style={{ width: 200 }} align="center">
+                  {supplier.email}
+                </TableCell>
                 <TableCell align="center">
-                  {changeDate(ot.budget.deliveryDate)}
+                  <IconButton
+                    aria-label="edit"
+                    component={Link}
+                    onClick={() => handleUpdateSupplier(supplier.id)}
+                  >
+                    <EditIcon />
+                  </IconButton>
+                  <IconButton
+                    aria-label="delete"
+                    component={Link}
+                    onClick={() => handleDeleteSupplier(supplier.id)}
+                  >
+                    <DeleteIcon />
+                  </IconButton>
                 </TableCell>
               </TableRow>
             ))}
             {emptyRows > 0 && (
               <TableRow style={{ height: 53 * emptyRows }}>
-                <TableCell colSpan={6} />
+                <TableCell colSpan={4} />
               </TableRow>
             )}
           </TableBody>
@@ -213,8 +232,8 @@ export default function OTList() {
             <TableRow>
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25, { label: "All", value: -1 }]}
-                colSpan={3}
-                count={otList.length}
+                colSpan={4}
+                count={suppliers.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 SelectProps={{

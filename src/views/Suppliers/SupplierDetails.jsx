@@ -9,17 +9,17 @@ import {
   Box,
   Avatar,
 } from "@mui/material";
-import { getUserDetail } from "../../services/UsersService";
+import { getSupplierDetail } from "../../services/SuppliersService";
 
-const UserDetails = () => {
+const SupplierDetails = () => {
   const { id } = useParams();
-  const [user, setUser] = useState({});
+  const [supplier, setSupplier] = useState({});
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    getUserDetail(id)
-      .then((user) => {
-        setUser(user);
+    getSupplierDetail(id)
+      .then((supplier) => {
+        setSupplier(supplier);
         setLoading(false);
       })
       .catch((error) => {
@@ -32,23 +32,23 @@ const UserDetails = () => {
     return <Typography>Loading...</Typography>;
   }
 
-  if (!user) {
-    return <Typography>User not found</Typography>;
+  if (!supplier) {
+    return <Typography>Supplier not found</Typography>;
   }
 
-  const { name, phone, email, avatar, role } = user;
+  const { name, phone, email, logo } = supplier;
 
   return (
     <Container>
       <Typography variant="h3" gutterBottom style={{ marginTop: "20px" }}>
-        Detalle del usuario
+        Detalle del proveedor
       </Typography>
       <Box mt={4}>
         <Card sx={{ maxWidth: "50%" }}>
           {" "}
           <Avatar
             alt="Remy Sharp"
-            src={avatar}
+            src={logo}
             sx={{ width: 150, height: 150 }}
           />
           <CardContent>
@@ -61,12 +61,7 @@ const UserDetails = () => {
             <Typography variant="body1" paragraph>
               <strong>Email:</strong> {email}
             </Typography>
-            <Typography variant="h7">
-              <strong>Rol:</strong> {role}
-            </Typography>
-            <br />
-
-            <Link to="/users" style={{ textDecoration: "none" }}>
+            <Link to="/suppliers" style={{ textDecoration: "none" }}>
               <Button variant="contained" color="primary" style={{ marginTop: "16px" }}>
                 Volver
               </Button>
@@ -78,4 +73,4 @@ const UserDetails = () => {
   );
 };
 
-export default UserDetails;
+export default SupplierDetails;

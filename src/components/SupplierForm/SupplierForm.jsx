@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createUser } from "../../services/UsersService";
+import { createSupplier } from "../../services/SuppliersService";
 import { Link, useNavigate } from "react-router-dom";
 import {
   TextField,
@@ -13,35 +13,30 @@ import {
   MenuItem,
 } from "@mui/material";
 
-const UserForm = () => {
-  const [user, setUser] = useState({
-    avatar: "",
+const SupplierForm = () => {
+  const [supplier, setSupplier] = useState({
+    logo: "",
     name: "",
-    surname: "",
+    cif: "",
     phone: "",
     email: "",
-    password: "",
-    role: "",
+    address: "",
+    rowMaterials: [],
   });
 
   const navigate = useNavigate();
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    setUser({ ...user, [name]: value });
-  };
-
-  const handleRoleChange = (event) => {
-    const value = event.target.value;
-    setUser({ ...user, role: value });
+    setSupplier({ ...supplier, [name]: value });
   };
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    createUser(user)
+    createSupplier(supplier)
       .then((response) => {
         console.log(response);
-        navigate("/users");
+        navigate("/suppliers");
       })
       .catch((error) => console.log(error));
   };
@@ -51,81 +46,65 @@ const UserForm = () => {
       <Grid container spacing={1}>
         <Grid item xs={12}>
           <Typography variant="h3" gutterBottom style={{ marginTop: "30px" }}>
-            Crear un empleado
+            Crear un proveedor
           </Typography>
         </Grid>
         <Grid item xs={12} sm={7}>
           <form onSubmit={handleSubmit}>
             <TextField
-              label="Avatar"
+              label="Logo"
               variant="outlined"
-              fullWidth
-              name="avatar"
-              value={user.avatar}
+              name="logo"
+              value={supplier.logo}
               onChange={handleChange}
+              fullWidth
               margin="normal"
             />
             <TextField
               label="Nombre"
               variant="outlined"
-              fullWidth
               name="name"
-              value={user.name}
+              value={supplier.name}
               onChange={handleChange}
+              fullWidth
               margin="normal"
             />
             <TextField
-              label="Apellidos"
+              label="CIF"
               variant="outlined"
-              fullWidth
-              name="surname"
-              value={user.surname}
+              name="cif"
+              value={supplier.cif}
               onChange={handleChange}
+              fullWidth
               margin="normal"
             />
             <TextField
               label="Teléfono"
               variant="outlined"
-              fullWidth
               name="phone"
-              value={user.phone}
+              value={supplier.phone}
               onChange={handleChange}
+              fullWidth
               margin="normal"
             />
             <TextField
               label="Email"
               variant="outlined"
-              fullWidth
               name="email"
-              value={user.email}
+              value={supplier.email}
               onChange={handleChange}
+              fullWidth
               margin="normal"
             />
             <TextField
-              label="Password"
+              label="Dirección"
               variant="outlined"
-              fullWidth
-              name="password"
-              value={user.password}
+              name="address"
+              value={supplier.address}
               onChange={handleChange}
+              fullWidth
               margin="normal"
             />
-            <FormControl fullWidth style={{ marginTop: "16px" }}>
-              <InputLabel id="demo-simple-select-label">Rol</InputLabel>
-              <Select
-                labelId="demo-simple-select-label"
-                id="demo-simple-select"
-                value={user.role}
-                label="Rol"
-                onChange={handleRoleChange}
-              >
-                <MenuItem value={"SALES"}>SALES</MenuItem>
-                <MenuItem value={"PRODUCTION"}>PRODUCTION</MenuItem>
-                <MenuItem value={"WAREHOUSE"}>WAREHOUSE</MenuItem>
-                <MenuItem value={"PURCHASING"}>PURCHASING</MenuItem>
-                <MenuItem value={"ADMIN"}>ADMIN</MenuItem>
-              </Select>
-            </FormControl>
             <Grid item xs={12}>
               <Button
                 variant="contained"
@@ -136,13 +115,13 @@ const UserForm = () => {
                 Crear
               </Button>
 
-              <Link to="/users" style={{ textDecoration: "none" }}>
+              <Link to="/suppliers" style={{ textDecoration: "none" }}>
                 <Button
                   variant="outlined"
                   color="primary"
                   style={{ marginTop: "16px" }}
                 >
-                  Volver a la lista de empleados
+                  Volver a la lista de proveedor
                 </Button>
               </Link>
             </Grid>
@@ -153,4 +132,4 @@ const UserForm = () => {
   );
 };
 
-export default UserForm;
+export default SupplierForm;
