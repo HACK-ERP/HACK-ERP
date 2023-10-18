@@ -14,7 +14,7 @@ import {
 } from "@mui/material";
 import { useAuthContext } from "../../contexts/AuthContext";
 import { useEffect, useState } from "react";
-import { getNotificationList } from "../../services/notificationsService";
+import { getNotificationList } from "../../services/NotificationsService";
 
 const SIDE_NAV_WIDTH = 280;
 const TOP_NAV_HEIGHT = 64;

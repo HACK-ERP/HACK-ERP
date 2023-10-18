@@ -10,7 +10,7 @@ import {
   Avatar,
   Grid,
 } from "@mui/material";
-import { detailNotification } from "../../services/notificationsService";
+import { detailNotification } from "../../services/NotificationsService";
 
 const NotificationDetails = () => {
   const { id } = useParams();

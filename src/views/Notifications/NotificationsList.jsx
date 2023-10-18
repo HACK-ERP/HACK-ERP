@@ -19,7 +19,7 @@ import LastPageIcon from '@mui/icons-material/LastPage';
 import EmailIcon from '@mui/icons-material/Email';
 import { Container } from '@mui/system';
 import { Button, TableHead, Typography } from '@mui/material';
-import { getNotificationList, updateNotification } from '../../services/notificationsService';
+import { getNotificationList, updateNotification } from '../../services/NotificationsService';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
 
