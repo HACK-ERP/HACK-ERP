@@ -8,3 +8,9 @@ agregar la lista de materiales que lo componen en el detalle del producto
 Preguntas para el lunes:
 
 - El cambio de estado en budgetlist funciona cuando quiere
+
+
+Desplegar:
+Mongoo Atlas
+network access
+
