@@ -15,6 +15,7 @@ import {
 import { useAuthContext } from "../../contexts/AuthContext";
 import { useEffect, useState } from "react";
 import { getNotificationList } from "../../services/NotificationsService";
+import { logout } from "../../stores/AccessTokenStore";
 
 const SIDE_NAV_WIDTH = 280;
 const TOP_NAV_HEIGHT = 64;
@@ -121,6 +122,9 @@ export const TopNav = (props) => {
                     </Badge>
                   )}
                 </IconButton>
+              </Tooltip>
+              <Tooltip title="Notifications">
+                    <button onClick={logout}></button>
               </Tooltip>
             </Link>
             <Avatar

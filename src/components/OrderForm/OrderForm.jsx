@@ -73,6 +73,7 @@ export default function OrderForm({ setBudget, productsToSend, setProductsToSend
     });
   };
 
+  const today = new Date().toISOString().split('T')[0];
 
 
   return (
@@ -120,6 +121,9 @@ export default function OrderForm({ setBudget, productsToSend, setProductsToSend
               autoComplete="given-name"
               value={deliveryDate}
               onChange={handleChange}
+              inputProps={{
+                min: today,
+              }}
             />
           </Grid>
           <Grid item xs={12}>
