@@ -24,9 +24,9 @@ const statusMap = {
   refunded: "error",
 };
 
-export const OverviewLatestOrders = ({orders, sx}) => {
+export const OverviewLatestOrders = ({orders, sx, getOTClient}) => {
  
-console.log(orders);
+
   return (
     <Card sx={sx}>
       <CardHeader title="Últimas Órdenes de Producción" />
@@ -37,7 +37,6 @@ console.log(orders);
             <TableRow>
               <TableCell>Orden</TableCell>
               <TableCell>Cliente</TableCell>
-              <TableCell sortDirection="desc">Fecha</TableCell>
               <TableCell>Estado</TableCell>
             </TableRow>
           </TableHead>
@@ -48,7 +47,8 @@ console.log(orders);
               return (
                 <TableRow hover key={order.id}>
                   <TableCell>{order.code}</TableCell>
-                  <TableCell>{order.budget.client}</TableCell>
+
+                  <TableCell>{getOTClient(order.budget.client)}</TableCell>
                   
                   <TableCell>
                     <SeverityPill color={statusMap[order.status]}>
