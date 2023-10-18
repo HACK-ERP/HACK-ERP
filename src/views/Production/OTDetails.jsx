@@ -9,11 +9,13 @@ import {
   Box,
 } from "@mui/material";
 import { getOTDetail } from "../../services/OTService";
+import { getProductList } from "../../services/ProductsService";
 
 const OTDetails = () => {
   const { id } = useParams();
   const [ot, setOT] = useState({});
   const [loading, setLoading] = useState(true);
+  const [products, setProducts] = useState([]);
 
   useEffect(() => {
     getOTDetail(id)
@@ -27,6 +29,12 @@ const OTDetails = () => {
       });
   }, [id]);
 
+  useEffect(() => {
+    getProductList().then((response) => {
+      setProducts(response);
+    });
+  }, []);
+
   if (loading) {
     return <Typography>Loading...</Typography>;
   }
@@ -35,7 +43,19 @@ const OTDetails = () => {
     return <Typography>OT not found</Typography>;
   }
 
-  const { code, status } = ot;
+  function changeDate(dateISO) {
+    const date = new Date(dateISO);
+    const day = date.getUTCDate();
+    const month = date.getUTCMonth() + 1;
+    const year = date.getUTCFullYear();
+
+    const dayStr = day.toString().padStart(2, "0");
+    const monthStr = month.toString().padStart(2, "0");
+
+    const newDate = `${dayStr}/${monthStr}/${year}`;
+
+    return newDate;
+  }
 
   return (
     <Container>
@@ -46,14 +66,51 @@ const OTDetails = () => {
         <Card sx={{ maxWidth: "50%" }}>
           {" "}
           <CardContent>
-            <Typography variant="h4" gutterBottom>
-              {code}
+            <Typography variant="h6" gutterBottom>
+              <strong>Código: </strong>
+              {ot.code}
             </Typography>
-            {/* <Typography variant="body1" paragraph>
-              <strong>Products:</strong> {ot.budget.products}
-            </Typography> */}
-            <Typography variant="body1" paragraph>
-              <strong>Estado:</strong> {status}
+            <Typography variant="h6" paragraph>
+              <strong>Estado: </strong>
+              {ot.status}
+            </Typography>
+            <Typography variant="h6" paragraph>
+              <strong>Fecha de entrega: </strong>
+              {changeDate(ot.budget.deliveryDate)}
+            </Typography>
+            <Typography variant="h6" paragraph>
+              <strong>Productos:</strong>
+              <ul>
+                {ot.budget.products.map((otProduct, index) => {
+                  const matchingProduct = products.find(
+                    (product) => product.id === otProduct.product_id
+                  );
+                  return (
+                    <li key={index}>
+                      {matchingProduct
+                        ? matchingProduct.name
+                        : "Producto no encontrado"}
+                      <ul>
+                        {matchingProduct && matchingProduct.materials && (
+                          <li>
+                            <strong>Materiales:</strong>
+                            <ul>
+                              {matchingProduct.materials.map(
+                                (material, materialIndex) => (
+                                  <li key={materialIndex}>
+                                    {material.material_id.name} -{" "}
+                                    {material.quantity} uds.
+                                  </li>
+                                )
+                              )}
+                            </ul>
+                          </li>
+                        )}
+                      </ul>
+                    </li>
+                  );
+                })}
+              </ul>
             </Typography>
             <Link to="/ot" style={{ textDecoration: "none" }}>
               <Button
