@@ -4,7 +4,7 @@ import { getAccessToken, logout } from '../stores/AccessTokenStore';
 
 const createHttp = (useAccessToken = false) => {
   const http = axios.create({
-    baseURL:import.meta.env.VITE_API_URP || "http://localhost:3001",
+    baseURL:import.meta.env.VITE_API_URL || "http://localhost:3001",
   });
 
   if (useAccessToken) {
