@@ -108,7 +108,8 @@ export default function Chart() {
       amount: total,
     };
   });
-  data = monthlyData;
+
+  const chartData = [...monthlyData];
 
   function convertMonth(month) {
     switch (month) {
@@ -154,7 +155,7 @@ export default function Chart() {
       </Typography>
       <ResponsiveContainer>
         <LineChart
-          data={data}
+          data={chartData}
           margin={{
             top: 16,
             right: 16,
