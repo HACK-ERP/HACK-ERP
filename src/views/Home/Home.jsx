@@ -11,17 +11,38 @@ import Paper from "@mui/material/Paper";
 import PieChart from "../../components/overview/PieChart";
 import { useEffect, useState } from "react";
 import { getOTList } from "../../services/OTService";
+import { getClientsList } from "../../services/ClientsService";
 
 const Page = () => {
   const [otList, setOtList] = useState([]);
+  const [clients, setClients] = useState([]);
 
   useEffect(() => {
     getOTList().then((response) => {
+      //ordendando las ot por fecha y limitando a 6
+      response.sort((a, b) => new Date(a.date) - new Date(b.date));
+      response = response.slice(0, 6);
       setOtList(response);
     });
   }, []);
 
-  console.log(otList);
+  useEffect(() => {
+    getClientsList().then((response) => {
+      setClients(response);
+    });
+  }, []);
+
+  console.log("otList", otList);
+
+  const getOTClient = (id) => {
+    const client = clients.find((client) => client.id === id);
+    return client.RS;
+  }
+
+  //pintando en consola las ots
+  console.log("otList", otList);
+  
+
 
   return (
     <>
@@ -30,6 +51,7 @@ const Page = () => {
         sx={{
           flexGrow: 1,
           py: 8,
+          maxWidth: { md: "calc(100vw - 64px)" },
         }}
       >
         <Container maxWidth="xl">
@@ -82,11 +104,15 @@ const Page = () => {
                 <PieChart />
               </Paper>
             </Grid>
-            <Grid xs={12} md={6} lg={4}>
+            <Grid xs={12} md={12} lg={4}>
               <OverviewLatestProducts sx={{ height: "100%" }} />
             </Grid>
             <Grid xs={12} md={12} lg={8}>
-              <OverviewLatestOrders orders={otList} sx={{ height: "100%" }} />
+              <OverviewLatestOrders
+              orders={otList}
+              sx={{ height: "100%" }}
+              getOTClient={getOTClient}
+              />
             </Grid>
           </Grid>
         </Container>
