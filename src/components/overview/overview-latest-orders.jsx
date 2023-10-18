@@ -1,4 +1,3 @@
-import { format } from "date-fns";
 import PropTypes from "prop-types";
 import ArrowRightIcon from "@heroicons/react/24/solid/ArrowRightIcon";
 import {
@@ -25,9 +24,9 @@ const statusMap = {
   refunded: "error",
 };
 
-export const OverviewLatestOrders = (props) => {
-  const { orders = [], sx } = props;
-
+export const OverviewLatestOrders = ({orders, sx}) => {
+ 
+console.log(orders);
   return (
     <Card sx={sx}>
       <CardHeader title="Últimas Órdenes de Producción" />
@@ -44,13 +43,13 @@ export const OverviewLatestOrders = (props) => {
           </TableHead>
           <TableBody>
             {orders.map((order) => {
-              const createdAt = format(order.createdAt, "dd/MM/yyyy");
+              
 
               return (
                 <TableRow hover key={order.id}>
-                  <TableCell>{order.ref}</TableCell>
-                  <TableCell>{order.customer.name}</TableCell>
-                  <TableCell>{createdAt}</TableCell>
+                  <TableCell>{order.code}</TableCell>
+                  <TableCell>{order.budget.client}</TableCell>
+                  
                   <TableCell>
                     <SeverityPill color={statusMap[order.status]}>
                       {order.status}
