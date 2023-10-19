@@ -108,7 +108,6 @@ export default function SupplierList() {
 
   useEffect(() => {
     getSuppliersList().then((response) => {
-      console.log(response);
       setSuppliers(response);
     });
   }, []);

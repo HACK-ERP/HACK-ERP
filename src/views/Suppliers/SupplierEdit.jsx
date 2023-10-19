@@ -32,14 +32,12 @@ const SupplierEdit = () => {
 
   const handleUpdate = (event) => {
     event.preventDefault();
-    console.log("ENTRA HANDLE");
+
     updateSupplier(id, supplier)
       .then(() => {
-        console.log("entra por aqui");
         navigate("/suppliers");
       })
       .catch((error) => {
-        console.log("ENTRA AL CATCH");
         console.log(error);
       });
   };

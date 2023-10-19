@@ -83,7 +83,7 @@ export default function BudgetForm() {
     const activeClient = [...clients].find((client) => client.id === budget.client);
     setActiveClient(activeClient);
   }, [budget.client, clients]);
-  console.log(activeClient);
+
 
 
 

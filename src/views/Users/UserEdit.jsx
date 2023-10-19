@@ -36,14 +36,11 @@ const UserEdit = () => {
 
   const handleUpdate = (event) => {
     event.preventDefault();
-    console.log("ENTRA HANDLE");
     updateUser(id, user)
       .then(() => {
-        console.log("entra por aqui");
         navigate("/users");
       })
       .catch((error) => {
-        console.log("ENTRA AL CATCH");
         console.log(error);
       });
   };

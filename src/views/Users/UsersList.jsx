@@ -105,7 +105,6 @@ export default function UserList() {
 
   useEffect(() => {
     getUsersList().then((response) => {
-      console.log(response);
       setUsers(response);
     });
   }, []);
