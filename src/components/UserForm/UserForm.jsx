@@ -119,11 +119,11 @@ const UserForm = () => {
                 label="Rol"
                 onChange={handleRoleChange}
               >
-                <MenuItem value={"SALES"}>SALES</MenuItem>
-                <MenuItem value={"PRODUCTION"}>PRODUCTION</MenuItem>
-                <MenuItem value={"WAREHOUSE"}>WAREHOUSE</MenuItem>
-                <MenuItem value={"PURCHASING"}>PURCHASING</MenuItem>
-                <MenuItem value={"ADMIN"}>ADMIN</MenuItem>
+                <MenuItem value={"Ventas"}>Ventas</MenuItem>
+                <MenuItem value={"Producción"}>Producción</MenuItem>
+                <MenuItem value={"Logistica"}>Logistica</MenuItem>
+                <MenuItem value={"Compras"}>Compras</MenuItem>
+                <MenuItem value={"Administrador"}>Administrador</MenuItem>
               </Select>
             </FormControl>
             <Grid item xs={12}>
