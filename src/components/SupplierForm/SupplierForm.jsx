@@ -7,10 +7,6 @@ import {
   Typography,
   Container,
   Grid,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
 } from "@mui/material";
 
 const SupplierForm = () => {

@@ -4,7 +4,7 @@ import createHttp from "./BaseService";
 
 const http = createHttp(true);
 
-export const getOTList = () => http.get("/hackerp/ot/list?sortBy=createdAt:desc");
+export const getOTList = () => http.get("/hackerp/ot/list");
 
 export const getOTDetail = (id) => http.get(`/hackerp/ot/${id}`);
 

@@ -34,14 +34,13 @@ const ProductEdit = () => {
 
   const handleUpdate = (event) => {
     event.preventDefault();
-    console.log("ENTRA HANDLE");
+
     updateProduct(id, product)
       .then(() => {
-        console.log("entra por aqui");
+
         navigate("/products");
       })
       .catch((error) => {
-        console.log("ENTRA AL CATCH");
         console.log(error);
       });
   };

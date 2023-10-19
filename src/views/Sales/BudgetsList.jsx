@@ -208,13 +208,8 @@ export default function BudgetList() {
                                 code: budget.budgetNumber,
                                 userId: user.id,
                               })
-                                .then((response) => {
-                                  console.log(
-                                    "budget: " + budget.id,
-                                    "code: " + budget.budgetNumber,
-                                    "userId: " + user.id
-                                  );
-                                  console.log(response);
+                                .then(() => {
+                                  console.log("OT creada");
                                 })
                                 .catch((error) => console.log(error));
                             })

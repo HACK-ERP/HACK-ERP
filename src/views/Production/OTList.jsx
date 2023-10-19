@@ -179,7 +179,7 @@ export default function OTList() {
       status: updatedStatus,
       user: user.user.id
     };
-    console.log(body);
+
   
     setOtList((prevOtList) =>
     prevOtList.map((otItem) =>
@@ -188,8 +188,8 @@ export default function OTList() {
   );
   
     updateOTStatus(body.id, body)
-      .then((response) => {
-        console.log(response);
+      .then(() => {
+        console.log("Estado actualizado")
       })
       .catch((error) => {
         // Manejar errores aquí si es necesario

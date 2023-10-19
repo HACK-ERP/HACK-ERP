@@ -20,8 +20,7 @@ const MaterialsCreate = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     createMaterial(material)
-      .then((response) => {
-        console.log(response);
+      .then(() => {
         navigate("/materials");
       })
       .catch((error) => console.log(error));

@@ -62,4 +62,13 @@ export const items = [
       </SvgIcon>
     ),
   },
+  {
+    title: "Ordenes de Compra",
+    href: "/purchases",
+    icon: (
+      <SvgIcon fontSize="small">
+        <AddBusinessIcon />
+      </SvgIcon>
+    ),
+  },
 ];

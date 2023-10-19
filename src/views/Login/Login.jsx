@@ -37,7 +37,6 @@ const Login = () => {
         onSubmit: (values, helpers) => {
             loginRequest(values)
                 .then((res) => {
-                    console.log(res);
                     login(res.accessToken, () => navigate('/'))
                 })
                 .catch((err) => {

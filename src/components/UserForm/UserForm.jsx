@@ -39,8 +39,7 @@ const UserForm = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     createUser(user)
-      .then((response) => {
-        console.log(response);
+      .then(() => {
         navigate("/users");
       })
       .catch((error) => console.log(error));

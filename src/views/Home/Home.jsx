@@ -81,17 +81,6 @@ const Page = () => {
     return totalOffers;
   };
   
-
-  console.log(calculateTotalOffers(otList, products))
-  console.log(calculateTotalSales(otList, products))
-  
-
-
-
-
-   
-
-
   return (
     <>
       <Box

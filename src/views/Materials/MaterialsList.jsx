@@ -86,7 +86,7 @@ export default function MaterialList() {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [materials, setMaterials] = useState([]);
-    console.log(materials)
+
 
     useEffect(() => {
         getMaterialList()

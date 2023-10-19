@@ -32,6 +32,11 @@ import SupplierCreate from "./views/Suppliers/SupplierCreate";
 import SupplierDetails from "./views/Suppliers/SupplierDetails";
 import SupplierEdit from "./views/Suppliers/SupplierEdit";
 
+import MaterialRequirements from "./views/MaterialRequirements/MaterialRequirements";
+import CollapsibleTable from "./views/MaterialRequirements/CollapsibleTable";
+
+
+
 
 function App() {
   const { isAuthenticationFetched } = useAuthContext();
@@ -84,6 +89,10 @@ function App() {
             <Route path="/suppliers/:id" element={<SupplierDetails />} />
             <Route path="/suppliers/create" element={<SupplierCreate />} />
             <Route path="/suppliers/:id/edit" element={<SupplierEdit />} />
+
+            {/* Puchases Orders */}
+            <Route path="/purchases" element={<MaterialRequirements />} />
+            <Route path="/purchases/table" element={<CollapsibleTable />} />
 
           </Route>
         </Routes>
