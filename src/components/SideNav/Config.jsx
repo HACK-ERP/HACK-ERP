@@ -1,9 +1,10 @@
-import ChartBarIcon from "@heroicons/react/24/solid/ChartBarIcon";
 import ShoppingBagIcon from "@heroicons/react/24/solid/ShoppingBagIcon";
+import PrecisionManufacturingIcon from '@mui/icons-material/PrecisionManufacturing';
 import UsersIcon from "@heroicons/react/24/solid/UsersIcon";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
 import FactoryIcon from "@mui/icons-material/Factory";
 import AddBusinessIcon from "@mui/icons-material/AddBusiness";
+
 
 import { SvgIcon } from "@mui/material";
 
@@ -22,7 +23,7 @@ export const items = [
     href: "/ot",
     icon: (
       <SvgIcon fontSize="small">
-        <ChartBarIcon />
+        <PrecisionManufacturingIcon />
       </SvgIcon>
     ),
   },
@@ -63,7 +64,7 @@ export const items = [
     ),
   },
   {
-    title: "Ordenes de Compra",
+    title: "Pedidos",
     href: "/purchases",
     icon: (
       <SvgIcon fontSize="small">
