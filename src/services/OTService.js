@@ -10,5 +10,5 @@ export const getOTDetail = (id) => http.get(`/hackerp/ot/${id}`);
 
 export const createOT = (ot) => http.post("/hackerp/ot/create", ot);
 
-export const updateOT = (id, ot) => http.put(`/hackerp/ot/${id}`, ot);
+export const updateOTStatus = (id, body) => http.put(`/hackerp/ot/${id}`, body);
 
