@@ -1,4 +1,3 @@
-import TableCell from '@mui/material/TableCell';
 import FormControl from '@mui/material/FormControl';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -9,7 +8,6 @@ const states = ['Pendiente', 'Materiales Solicitados', 'Materiales Recibidos', '
 function StatusCell({ status, onChange }) {
     const isEditable =
         (status === 'Pendiente' && 'Materiales Solicitados') ||
-        (status === 'Materiales Solicitados' && 'Materiales Recibidos') ||
         (status === 'Materiales Recibidos' && 'En Proceso') ||
         (status === 'En Proceso' && 'Entregado');
 
@@ -17,15 +15,18 @@ function StatusCell({ status, onChange }) {
         onChange(event.target.value);
     };
 
+
     return (
-        <TableCell align="center">
+        <>
             {isEditable ? (
-                <FormControl>
-                    <InputLabel id="status-label">Estado</InputLabel>
+                <FormControl fullWidth>
+                    <InputLabel id="estado" >Estado</InputLabel>
                     <Select
-                        labelId="status-label"
+                    sx={{minWidth:150}}
+                        labelId="estado"
                         id="status-select"
-                        value={status}
+                        label="Estado"
+                        value={status || ''}
                         onChange={handleChangeStatus}
                     >
                         {states
@@ -40,7 +41,7 @@ function StatusCell({ status, onChange }) {
             ) : (
                 status
             )}
-        </TableCell>
+        </>
     );
 }
 

@@ -20,10 +20,16 @@ import LastPageIcon from "@mui/icons-material/LastPage";
 import FirstPageIcon from "@mui/icons-material/FirstPage";
 import { KeyboardArrowLeft, KeyboardArrowRight } from "@mui/icons-material";
 import { useEffect, useState } from "react";
-import { getOTList } from "../../services/OTService";
+import { getOTList, updateOTStatus } from "../../services/OTService";
 import PropTypes from "prop-types";
+import MenuItem from "@mui/material/MenuItem";
+import FormControl from "@mui/material/FormControl";
+import Select from "@mui/material/Select";
+import InputLabel from "@mui/material/InputLabel";
 
 import { getProductList } from "../../services/ProductsService";
+import { useAuthContext } from "../../contexts/AuthContext";
+
 
 
 function TablePaginationActions(props) {
@@ -97,8 +103,6 @@ function changeDate(dateISO) {
 
   const dayStr = day.toString().padStart(2, "0");
   const monthStr = month.toString().padStart(2, "0");
-
-
   const newDate = `${dayStr}/${monthStr}/${year}`;
 
   return newDate;
@@ -116,6 +120,12 @@ export default function OTList() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
   const [otList, setOtList] = useState([]);
   const [products, setProducts] = useState([]);
+
+
+  const user = useAuthContext();
+ 
+
+  const states = ['Pendiente', 'Materiales Solicitados', 'Materiales Recibidos', 'En Proceso', 'Entregado'];
 
   useEffect(() => {
     getOTList().then((response) => {
@@ -162,6 +172,34 @@ export default function OTList() {
     setPage(0);
   };
 
+  const handleChangeStatus = (event, ot) => {
+    const updatedStatus = event.target.value;
+    const body = {
+      id: ot.id,
+      status: updatedStatus,
+      user: user.user.id
+    };
+    console.log(body);
+  
+    setOtList((prevOtList) =>
+    prevOtList.map((otItem) =>
+      otItem.id === ot.id ? { ...otItem, status: event.target.value } : otItem
+    )
+  );
+  
+    updateOTStatus(body.id, body)
+      .then((response) => {
+        console.log(response);
+      })
+      .catch((error) => {
+        // Manejar errores aquí si es necesario
+        console.error(error);
+      });
+  };
+  
+
+
+
   return (
     <Container>
       <Typography variant="h3" gutterBottom style={{ marginTop: "20px" }}>
@@ -180,9 +218,9 @@ export default function OTList() {
           <TableBody>
             {(rowsPerPage > 0
               ? otList.slice(
-                  page * rowsPerPage,
-                  page * rowsPerPage + rowsPerPage
-                )
+                page * rowsPerPage,
+                page * rowsPerPage + rowsPerPage
+              )
               : otList
             ).map((ot) => (
               <TableRow key={ot.id}>
@@ -198,7 +236,40 @@ export default function OTList() {
                 <TableCell align="left">
                   {productsToShow(ot.budget.products)}
                 </TableCell>
-                <TableCell align="center">{ot.status}</TableCell>
+
+                {
+                  ot.otS=== "Materiales Solicitados" || ot.otS=== "Entregado" ?
+                    (
+                      <TableCell align="center">
+                        {ot.status}
+                      </TableCell>
+                    )
+                    : (
+                      <TableCell align="center">
+                        <FormControl fullWidth>
+                          <InputLabel id="estado" >{ot.status}</InputLabel>
+                          <Select
+                            sx={{ minWidth: 150 }}
+                            labelId="estado"
+                            id="status-select"
+                            label={ot.status}
+                            value={ot.status}
+                            onChange={(event) => handleChangeStatus(event, ot)}
+                          >
+                            {states
+                              .map((state) => (
+                                <MenuItem key={state} value={state}>
+                                  {state}
+                                </MenuItem>
+                              ))}
+                          </Select>
+                        </FormControl>
+                      </TableCell>
+                    )
+                }
+
+
+
                 <TableCell align="center">
                   {changeDate(ot.budget.deliveryDate)}
                 </TableCell>
