@@ -50,9 +50,11 @@ const Page = () => {
   const calculateTotalSales = (otList, products) => {
     let totalSales = 0;
   
+console.log(otList)
+
     otList.forEach((ot) => {
       const budget = ot.budget;
-      budget.products.forEach((budgetProduct) => {
+      budget.products?.forEach((budgetProduct) => {
         const product = products.find((p) => p.id === budgetProduct.product_id);
         if (product) {
           const sales = product.price * budgetProduct.quantity;
@@ -64,7 +66,7 @@ const Page = () => {
     return totalSales;
   };
   
-  const calculateTotalOffers = (otList, products) => {
+/*   const calculateTotalOffers = (otList, products) => {
     let totalOffers = 0;
   
     otList.forEach((ot) => {
@@ -79,7 +81,7 @@ const Page = () => {
     });
   
     return totalOffers;
-  };
+  }; */
   
   return (
     <>

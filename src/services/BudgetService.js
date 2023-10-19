@@ -2,7 +2,7 @@ import createHttp from './BaseService';
 
 const http = createHttp(true);
 
-export const getBudgetList = () => http.get('/hackerp/budget/list?sortBy=createdAt:desc');
+export const getBudgetList = () => http.get('/hackerp/budget/list');
 
 export const getBudgetDetail = (id) => http.get(`/hackerp/budget/${id}`);
 

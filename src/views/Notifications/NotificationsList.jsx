@@ -109,6 +109,7 @@ export default function NotificationsList() {
 
     const navigate = useNavigate();
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     const filterNotifications = (notifications) => {
         const filteredNotifications = notifications.filter((notification) => {
             return notification.receiver === user.role;
@@ -140,7 +141,7 @@ export default function NotificationsList() {
             .then(response => {
                 setNotifications(filterNotifications(response));
             })
-    }, []);
+    }, [filterNotifications]);
 
     let rows = []
     rows = notifications;
