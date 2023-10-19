@@ -10,14 +10,7 @@ import TravelExploreIcon from '@mui/icons-material/TravelExplore';
 import PermContactCalendarIcon from '@mui/icons-material/PermContactCalendar';
 import Paper from '@mui/material/Paper';
 
-
-
-
-
-
-
 export default function Review({ budget, products, clients }) {
- 
 
   const productsToShow = [...products].filter((product) => {
     return budget.products.map((productBudget) => productBudget.product_id).includes(product.id);
