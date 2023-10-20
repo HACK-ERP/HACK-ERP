@@ -16,6 +16,7 @@ import { useAuthContext } from "../../contexts/AuthContext";
 import { useEffect, useState } from "react";
 import { getNotificationList } from "../../services/NotificationsService";
 import { logout } from "../../stores/AccessTokenStore";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const SIDE_NAV_WIDTH = 280;
 const TOP_NAV_HEIGHT = 64;
@@ -43,10 +44,8 @@ export const TopNav = (props) => {
   useEffect(() => {
     getNotificationList().then((response) => {
       setnotifications(filterNotifications(response));
-
-    })
-  }, [])
-
+    });
+  }, []);
 
   const { user } = useAuthContext();
 
@@ -123,10 +122,13 @@ export const TopNav = (props) => {
                   )}
                 </IconButton>
               </Tooltip>
-              <Tooltip title="Notifications">
-                    <button onClick={logout}></button>
-              </Tooltip>
             </Link>
+            <Tooltip title="logout">
+              <IconButton onClick={logout}>
+                <LogoutIcon />
+              </IconButton>
+            </Tooltip>
+
             <Avatar
               //onClick={}
               href={user.avatar}
