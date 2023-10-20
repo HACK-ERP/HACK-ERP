@@ -139,7 +139,7 @@ const Page = () => {
               />
             </Grid>
             <Grid xs={12} sm={6} lg={3}>
-              <OverviewTotalProfit sx={{ height: "100%" }} value="15k €" />
+              <OverviewTotalProfit sx={{ height: "100%" }} value="150K €" />
             </Grid>
             <Grid item xs={12} md={8} lg={9}>
               <Paper

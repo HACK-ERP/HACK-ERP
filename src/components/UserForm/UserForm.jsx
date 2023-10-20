@@ -73,7 +73,7 @@ const UserForm = () => {
               onChange={handleChange}
               margin="normal"
             />
-            <TextField
+            {/* <TextField
               label="Apellidos"
               variant="outlined"
               fullWidth
@@ -81,7 +81,7 @@ const UserForm = () => {
               value={user.surname}
               onChange={handleChange}
               margin="normal"
-            />
+            /> */}
             <TextField
               label="Teléfono"
               variant="outlined"
