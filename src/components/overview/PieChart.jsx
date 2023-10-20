@@ -52,7 +52,7 @@ const PieChart = () => {
     <div className="pie-chart-container">
       <Chart data={data}>
         <PieSeries valueField="area" argumentField="budget" />
-        <Title text="Estado de Producción" />
+        <Title text="Estado de Presupuestos" />
         <Animation />
         <Legend position="bottom" />
       </Chart>

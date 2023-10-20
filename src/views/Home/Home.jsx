@@ -13,11 +13,13 @@ import { useEffect, useState } from "react";
 import { getOTList } from "../../services/OTService";
 import { getClientsList } from "../../services/ClientsService";
 import { getProductList } from "../../services/ProductsService";
+import { getBudgetList } from "../../services/BudgetService";
 
 const Page = () => {
   const [otList, setOtList] = useState([]);
   const [clients, setClients] = useState([]);
   const [products, setProducts] = useState([]);
+  const [budgets, setBudgets] = useState([]);
 
   useEffect(() => {
     getOTList().then((response) => {
@@ -37,20 +39,23 @@ const Page = () => {
     });
   }, []);
 
+  useEffect(() => {
+    getBudgetList().then((response) => {
+      setBudgets(response);
+    });
+  }, []);
 
-
-  const otsToShow = otList.slice(0,6)
-
+  const otsToShow = otList.slice(0, 6);
 
   const getOTClient = (id) => {
     const client = clients.find((client) => client.id === id);
     return client.RS;
-  }
+  };
 
   const calculateTotalSales = (otList, products) => {
     let totalSales = 0;
-  
-console.log(otList)
+
+    console.log(otList);
 
     otList.forEach((ot) => {
       const budget = ot.budget;
@@ -62,11 +67,31 @@ console.log(otList)
         }
       });
     });
-  
+
     return totalSales;
   };
-  
-/*   const calculateTotalOffers = (otList, products) => {
+
+  const calculateTotalClients = (clients) => {
+    return clients.length;
+  };
+
+  // Función para calcular el porcentaje de presupuestos entregados
+
+  const calculateTotalBudgetsDelivered = (budgets) => {
+    let totalBudgetsDelivered = 0;
+
+    budgets.forEach((budget) => {
+      if (budget.status === "Entregado") {
+        totalBudgetsDelivered++;
+      }
+    });
+
+    // redondear a 2 decimales
+    return totalBudgetsDelivered = Math.round((totalBudgetsDelivered * 100) / budgets.length);
+    
+  };
+
+  /*   const calculateTotalOffers = (otList, products) => {
     let totalOffers = 0;
   
     otList.forEach((ot) => {
@@ -82,7 +107,7 @@ console.log(otList)
   
     return totalOffers;
   }; */
-  
+
   return (
     <>
       <Box
@@ -97,22 +122,18 @@ console.log(otList)
           <Grid container spacing={3}>
             <Grid xs={12} sm={6} lg={3}>
               <OverviewBudget
-                difference={12}
-                positive
                 sx={{ height: "100%" }}
-                value={`${calculateTotalSales(otList, products)/1000}K €`}
+                value={`${calculateTotalSales(otList, products) / 1000}K €`}
               />
             </Grid>
             <Grid xs={12} sm={6} lg={3}>
               <OverviewTotalCustomers
-                difference={16}
-                positive={false}
                 sx={{ height: "100%" }}
-                value="1.6k"
+                value={`${calculateTotalClients(clients)} Clientes`}
               />
             </Grid>
             <Grid xs={12} sm={6} lg={3}>
-              <OverviewTasksProgress sx={{ height: "100%" }} value={50} />
+              <OverviewTasksProgress sx={{ height: "100%" }} value={`${calculateTotalBudgetsDelivered(budgets)}`} />
             </Grid>
             <Grid xs={12} sm={6} lg={3}>
               <OverviewTotalProfit sx={{ height: "100%" }} value="15k €" />
@@ -148,9 +169,9 @@ console.log(otList)
             </Grid>
             <Grid xs={12} md={12} lg={8}>
               <OverviewLatestOrders
-              orders={otsToShow}
-              sx={{ height: "100%" }}
-              getOTClient={getOTClient}
+                orders={otsToShow}
+                sx={{ height: "100%" }}
+                getOTClient={getOTClient}
               />
             </Grid>
           </Grid>

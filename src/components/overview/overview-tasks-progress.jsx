@@ -29,7 +29,7 @@ export const OverviewTasksProgress = (props) => {
               gutterBottom
               variant="overline"
             >
-              Producción Completada
+              Presupuestos Entregados
             </Typography>
             <Typography variant="h4">
               {value}%
