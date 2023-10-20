@@ -16,6 +16,7 @@ import MaterialsCreate from "./views/Materials/MaterialsCreate";
 
 import BudgetList from "./views/Sales/BudgetsList";
 import BudgetForm from "./views/Sales/BudgetForm";
+import BudgetDetail from "./views/Sales/BudgetDetail";
 
 import UserList from "./views/Users/UsersList";
 import UserCreate from "./views/Users/UserCreate";
@@ -68,6 +69,7 @@ function App() {
 
             <Route path="/budget" element={<BudgetList />} />
             <Route path="/budget/create" element={<BudgetForm />} />
+            <Route path="/budget/:id" element={<BudgetDetail />} />
 
             {/* Users routes */}
 

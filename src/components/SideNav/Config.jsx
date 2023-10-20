@@ -4,6 +4,7 @@ import UsersIcon from "@heroicons/react/24/solid/UsersIcon";
 import WarehouseIcon from "@mui/icons-material/Warehouse";
 import FactoryIcon from "@mui/icons-material/Factory";
 import AddBusinessIcon from "@mui/icons-material/AddBusiness";
+import LocalShippingIcon from '@mui/icons-material/LocalShipping';
 
 
 import { SvgIcon } from "@mui/material";
@@ -68,7 +69,7 @@ export const items = [
     href: "/purchases",
     icon: (
       <SvgIcon fontSize="small">
-        <AddBusinessIcon />
+        <LocalShippingIcon />
       </SvgIcon>
     ),
   },
