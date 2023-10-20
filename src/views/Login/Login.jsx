@@ -78,7 +78,7 @@ const Login = () => {
         >
           <div>
             <Stack spacing={1} sx={{ mb: 3 }}>
-              <Typography variant="h4">Login</Typography>
+              <Typography variant="h4">Bienvenido a Hack-ERP</Typography>
             </Stack>
             <Tabs onChange={handleMethodChange} sx={{ mb: 3 }} value={method}>
               <Tab
