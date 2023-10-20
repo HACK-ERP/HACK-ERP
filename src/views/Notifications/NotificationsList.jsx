@@ -1,5 +1,4 @@
 
-import * as React from 'react';
 import PropTypes from 'prop-types';
 import { useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -22,6 +21,8 @@ import { Button, TableHead, Typography } from '@mui/material';
 import { getNotificationList, updateNotification } from '../../services/NotificationsService';
 import { useAuthContext } from '../../contexts/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { useEffect } from 'react';
+import { useState } from 'react';
 
 function TablePaginationActions(props) {
     const theme = useTheme();
@@ -103,7 +104,7 @@ function changeDate(dateISO) {
 
 export default function NotificationsList() {
 
-    const [notifications, setNotifications] = React.useState([]);
+    const [notifications, setNotifications] = useState([]);
 
     const { user } = useAuthContext();
 
@@ -136,18 +137,19 @@ export default function NotificationsList() {
         navigate(`/notification/${id}`);
     }
 
-    React.useEffect(() => {
+    useEffect(() => {
         getNotificationList()
-            .then(response => {
-                setNotifications(filterNotifications(response));
-            })
-    }, [filterNotifications]);
+          .then(response => {
+            setNotifications(filterNotifications(response));
+          })
+      }, []);
+      
 
     let rows = []
     rows = notifications;
 
-    const [page, setPage] = React.useState(0);
-    const [rowsPerPage, setRowsPerPage] = React.useState(5);
+    const [page, setPage] = useState(0);
+    const [rowsPerPage, setRowsPerPage] = useState(5);
 
     const emptyRows =
         page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
@@ -160,6 +162,8 @@ export default function NotificationsList() {
         setRowsPerPage(parseInt(event.target.value, 10));
         setPage(0);
     };
+
+    console.log(notifications);
 
     return (
         <Container>

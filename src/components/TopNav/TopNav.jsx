@@ -15,6 +15,11 @@ import {
 import { useAuthContext } from "../../contexts/AuthContext";
 import { useEffect, useState } from "react";
 import { getNotificationList } from "../../services/NotificationsService";
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
+
+import MenuItem from '@mui/material/MenuItem';
+import Menu from '@mui/material/Menu';
 import { logout } from "../../stores/AccessTokenStore";
 import LogoutIcon from "@mui/icons-material/Logout";
 
@@ -83,14 +88,6 @@ export const TopNav = (props) => {
                 <Bars3Icon />
               </SvgIcon>
             </IconButton>
-
-            {/* <Tooltip title="Search">
-              <IconButton>
-                <SvgIcon fontSize="small">
-                  <MagnifyingGlassIcon />
-                </SvgIcon>
-              </IconButton>
-            </Tooltip> */}
           </Stack>
           <Stack alignItems="center" direction="row" spacing={2}>
             <Tooltip title="Contacts">
@@ -123,22 +120,11 @@ export const TopNav = (props) => {
                 </IconButton>
               </Tooltip>
             </Link>
-            <Tooltip title="logout">
-              <IconButton onClick={logout}>
-                <LogoutIcon />
-              </IconButton>
-            </Tooltip>
-
-            <Avatar
-              //onClick={}
-              href={user.avatar}
-              sx={{
-                cursor: "pointer",
-                height: 40,
-                width: 40,
-              }}
-              src={user.avatar}
+            <SimpleListMenu
+              avatar={user.avatar}
+              method={logout}
             />
+
           </Stack>
         </Stack>
       </Box>
@@ -149,3 +135,65 @@ export const TopNav = (props) => {
 TopNav.propTypes = {
   onNavOpen: PropTypes.func,
 };
+
+
+
+
+
+const SimpleListMenu = ({ avatar, method }) => {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const open = Boolean(anchorEl);
+
+  const handleClickListItem = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  return (
+    <div>
+      <List component="nav" aria-label="Device settings">
+        <ListItem
+          button
+          id="lock-button"
+          aria-haspopup="listbox"
+          aria-controls="lock-menu"
+          aria-expanded={open ? 'true' : undefined}
+          onClick={handleClickListItem}
+        >
+          <Avatar
+            href={avatar}
+            sx={{
+              cursor: "pointer",
+              height: 40,
+              width: 40,
+            }}
+            src={avatar}
+          />
+        </ListItem>
+      </List>
+      <Menu
+        id="lock-menu"
+        anchorEl={anchorEl}
+        open={open}
+        onClose={handleClose}
+        MenuListProps={{
+          'aria-labelledby': 'lock-button',
+          role: 'listbox',
+        }}
+      >
+        <MenuItem onClick={() => method()}>
+          <Link href="/login" sx={{ color: "black", textDecoration:"none" }} >
+            Logout
+          </Link>
+        </MenuItem>
+      </Menu>
+    </div>
+  );
+}
+
