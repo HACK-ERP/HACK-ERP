@@ -34,7 +34,7 @@ import SupplierDetails from "./views/Suppliers/SupplierDetails";
 import SupplierEdit from "./views/Suppliers/SupplierEdit";
 
 import MaterialRequirements from "./views/MaterialRequirements/MaterialRequirements";
-import CollapsibleTable from "./views/MaterialRequirements/CollapsibleTable";
+import PurchaseMaterials from "./views/MaterialRequirements/PurchaseMaterials";
 
 
 
@@ -94,7 +94,7 @@ function App() {
 
             {/* Puchases Orders */}
             <Route path="/purchases" element={<MaterialRequirements />} />
-            <Route path="/purchases/table" element={<CollapsibleTable />} />
+            <Route path="/purchases/:id/create/:material_id" element={<PurchaseMaterials />} />
 
           </Route>
         </Routes>

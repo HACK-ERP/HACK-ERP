@@ -86,6 +86,7 @@ function Row(props) {
   const { ot, materialRequirements, loading } = props;
   const [open, setOpen] = useState(false);
 
+
   return (
     <>
       <TableRow sx={{ "& > *": { borderBottom: "unset" } }}>
@@ -132,7 +133,11 @@ function Row(props) {
                         <TableCell sx={Number(material.materials.quantity) > Number(material.materials.stock) ? { color: "red" } : { color: "primary.main" }}>{material.materials.stock}</TableCell>
                         <TableCell align="right">{material.materials.price}</TableCell>
                         <TableCell align="right">
-                          <Button variant="contained" color="success" disabled={Number(material.materials.stock) > Number(material.materials.quantity)}>
+                          <Button
+                            variant="contained"
+                            color="info"
+                            href={`/purchases/${ot.id}/create/${material.materials.material_id}`}
+                            disabled={Number(material.materials.stock) > Number(material.materials.quantity)}>
                             Comprar
                           </Button>
                         </TableCell>
