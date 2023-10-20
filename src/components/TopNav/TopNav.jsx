@@ -21,6 +21,7 @@ import ListItem from '@mui/material/ListItem';
 import MenuItem from '@mui/material/MenuItem';
 import Menu from '@mui/material/Menu';
 import { logout } from "../../stores/AccessTokenStore";
+import LogoutIcon from "@mui/icons-material/Logout";
 
 const SIDE_NAV_WIDTH = 280;
 const TOP_NAV_HEIGHT = 64;
@@ -48,10 +49,8 @@ export const TopNav = (props) => {
   useEffect(() => {
     getNotificationList().then((response) => {
       setnotifications(filterNotifications(response));
-
-    })
-  }, [])
-
+    });
+  }, []);
 
   const { user } = useAuthContext();
 
