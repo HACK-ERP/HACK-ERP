@@ -20,6 +20,7 @@ const Page = () => {
   const [clients, setClients] = useState([]);
   const [products, setProducts] = useState([]);
   const [budgets, setBudgets] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getOTList().then((response) => {
@@ -42,6 +43,7 @@ const Page = () => {
   useEffect(() => {
     getBudgetList().then((response) => {
       setBudgets(response);
+      setLoading(false);
     });
   }, []);
 
@@ -75,9 +77,9 @@ const Page = () => {
     return clients.length;
   };
 
-  // Función para calcular el porcentaje de presupuestos entregados
-
   const calculateTotalBudgetsDelivered = (budgets) => {
+    if (loading) return 0;
+
     let totalBudgetsDelivered = 0;
 
     budgets.forEach((budget) => {
@@ -86,9 +88,9 @@ const Page = () => {
       }
     });
 
-    // redondear a 2 decimales
-    return totalBudgetsDelivered = Math.round((totalBudgetsDelivered * 100) / budgets.length);
-    
+    return (totalBudgetsDelivered = Math.round(
+      (totalBudgetsDelivered * 100) / budgets.length
+    ));
   };
 
   /*   const calculateTotalOffers = (otList, products) => {
@@ -133,7 +135,10 @@ const Page = () => {
               />
             </Grid>
             <Grid xs={12} sm={6} lg={3}>
-              <OverviewTasksProgress sx={{ height: "100%" }} value={`${calculateTotalBudgetsDelivered(budgets)}`} />
+              <OverviewTasksProgress
+                sx={{ height: "100%" }}
+                value={`${calculateTotalBudgetsDelivered(budgets)}`}
+              />
             </Grid>
             <Grid xs={12} sm={6} lg={3}>
               <OverviewTotalProfit sx={{ height: "100%" }} value="15k €" />
