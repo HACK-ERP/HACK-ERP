@@ -8,4 +8,6 @@ export const getMaterialDetail = (id) => http.get(`/hackerp/rowMaterial/${id}`);
 
 export const createMaterial = (product) => http.post('/hackerp/rowMaterial/create', product);
 
-export const updateMaterial = (id, product) => http.put(`/hackerp/rowMaterial/${id}/edit`, product);
+export const updateMaterial = (id, product) => http.patch(`/hackerp/rowMaterial/${id}/edit`, product);
+//update stock in this route '/rowMaterial/:id/stock'
+export const purchaseMaterials = (id, data) => http.patch(`/hackerp/rowMaterial/${id}/stock`, data);

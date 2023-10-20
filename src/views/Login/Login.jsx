@@ -94,10 +94,7 @@ const Login = () => {
                                     label="Email"
                                     value="email"
                                 />
-                                <Tab
-                                    label="Phone Number"
-                                    value="phoneNumber"
-                                />
+
                             </Tabs>
                             {method === 'email' && (
                                 <form
@@ -109,7 +106,7 @@ const Login = () => {
                                             error={!!(formik.touched.email && formik.errors.email)}
                                             fullWidth
                                             helperText={formik.touched.email && formik.errors.email}
-                                            label="Email Address"
+                                            label="Email"
                                             name="email"
                                             onBlur={formik.handleBlur}
                                             onChange={formik.handleChange}
@@ -120,7 +117,7 @@ const Login = () => {
                                             error={!!(formik.touched.password && formik.errors.password)}
                                             fullWidth
                                             helperText={formik.touched.password && formik.errors.password}
-                                            label="Password"
+                                            label="Contraseña"
                                             name="password"
                                             onBlur={formik.handleBlur}
                                             onChange={formik.handleChange}
