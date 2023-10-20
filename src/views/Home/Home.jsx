@@ -57,8 +57,6 @@ const Page = () => {
   const calculateTotalSales = (otList, products) => {
     let totalSales = 0;
 
-    console.log(otList);
-
     otList.forEach((ot) => {
       const budget = ot.budget;
       budget.products?.forEach((budgetProduct) => {

@@ -64,6 +64,15 @@ const MaterialsCreate = () => {
               onChange={handleChange}
               margin="normal"
             />
+            <TextField
+              label="Precio"
+              variant="outlined"
+              fullWidth
+              name="precio"
+              value={material.price}
+              onChange={handleChange}
+              margin="normal"
+            />
             <Grid item xs={12}>
               <Button
                 variant="contained"

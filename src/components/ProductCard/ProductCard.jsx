@@ -9,7 +9,7 @@ import {
 } from "@mui/material";
 
 /* eslint-disable react/prop-types */
-const ProductCard = ({ product, onDelete, nameFontSize }) => {
+const ProductCard = ({ product,  nameFontSize }) => {
   const { id, name, description, image, price } = product;
   return (
     <Card sx={{ border: "1px solid #e0e0e0" }}>
@@ -67,15 +67,7 @@ const ProductCard = ({ product, onDelete, nameFontSize }) => {
         >
           Editar
         </Button>
-        <Button
-          onClick={() => onDelete(id)}
-          variant="contained"
-          color="error"
-          size="small"
-          sx={{ mt: 2 }}
-        >
-          Eliminar
-        </Button>
+
       </CardContent>
     </Card>
   );
